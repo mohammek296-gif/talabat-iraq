@@ -430,6 +430,25 @@ button.classList.add("active");
 
 renderFoods();
 
+document
+.getElementById("foods")
+.scrollIntoView({
+behavior:"smooth",
+block:"start"
+});
+
+}
+
+currentCategory=category;
+
+document
+.querySelectorAll(".cat")
+.forEach(b=>b.classList.remove("active"));
+
+button.classList.add("active");
+
+renderFoods();
+
 }
 
 
