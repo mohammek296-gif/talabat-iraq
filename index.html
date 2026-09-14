@@ -2,60 +2,320 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>طلبات عين التمر</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,Tahoma,sans-serif}
-body{background:#f5f5f5;color:#222}
-header{background:#e30613;color:#fff;padding:15px;position:sticky;top:0;z-index:50}
-.nav{max-width:1100px;margin:auto;display:flex;align-items:center;gap:10px}
-.logo{font-size:24px;font-weight:bold;flex:1}
-.btn{border:0;border-radius:12px;padding:11px 14px;font-weight:bold;cursor:pointer}
-.white{background:#fff;color:#e30613}
-.container{max-width:1100px;margin:auto;padding:18px}
-.hero{background:linear-gradient(135deg,#e30613,#ff5963);color:#fff;border-radius:22px;padding:28px 20px;margin-bottom:20px}
-.hero h1{font-size:29px;margin-bottom:8px}
-.hero p{opacity:.9}
-.search{width:100%;margin-top:18px;padding:15px;border:0;border-radius:12px;font-size:16px;outline:none}
-.categories{display:flex;gap:9px;overflow:auto;padding-bottom:10px}
-.cat{white-space:nowrap;border:0;background:#fff;padding:12px 17px;border-radius:12px;cursor:pointer}
-.cat.active{background:#e30613;color:#fff}
-.section{margin:25px 0 14px;font-size:22px}
-.restaurants{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:15px}
-.restaurant{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 3px 12px #0001}
-.pic{height:145px;background:#ffe6e6;display:flex;align-items:center;justify-content:center;font-size:70px}
-.info{padding:15px}
-.info h3{margin-bottom:7px}
-.rating{color:#f2a400;margin:7px 0}
-.muted{color:#777;font-size:14px}
-.foods{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:15px}
-.food{background:#fff;padding:16px;border-radius:17px;box-shadow:0 3px 10px #0001}
-.food h3{margin-bottom:7px}
-.food p{color:#777;line-height:1.5;font-size:14px}
-.foodBottom{display:flex;align-items:center;justify-content:space-between;margin-top:14px}
-.price{color:#e30613;font-weight:bold}
-.add{background:#e30613;color:#fff;border:0;border-radius:9px;padding:9px 13px;cursor:pointer}
-footer{margin-top:35px;background:#222;color:#fff;text-align:center;padding:28px}
-.modal{display:none;position:fixed;inset:0;background:#0008;z-index:100;align-items:center;justify-content:center;padding:18px}
-.modal.show{display:flex}
-.box{background:#fff;width:100%;max-width:520px;max-height:90vh;overflow:auto;border-radius:20px;padding:20px}
-.head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-.close{background:#eee;border:0;border-radius:50%;width:35px;height:35px;font-size:20px}
-.item{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid #eee}
-.total{display:flex;justify-content:space-between;font-size:20px;font-weight:bold;margin:20px 0}
-.primary{width:100%;padding:14px;background:#e30613;color:#fff;border:0;border-radius:12px;font-size:17px;cursor:pointer}
-.field{margin-bottom:13px}
-.field label{display:block;margin-bottom:6px}
-.field input,.field textarea{width:100%;padding:13px;border:1px solid #ddd;border-radius:10px;outline:none}
-.profile{background:#fff;padding:20px;border-radius:16px;text-align:center}
-.profileIcon{font-size:60px;margin-bottom:10px}
-.empty{text-align:center;padding:30px;color:#777}
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+font-family:Arial,Tahoma,sans-serif;
+}
+
+body{
+background:#f5f5f5;
+color:#222;
+}
+
+header{
+background:#e30613;
+color:white;
+padding:14px;
+position:sticky;
+top:0;
+z-index:100;
+box-shadow:0 2px 8px #0002;
+}
+
+.nav{
+max-width:1100px;
+margin:auto;
+display:flex;
+align-items:center;
+gap:8px;
+}
+
+.logo{
+font-size:23px;
+font-weight:bold;
+flex:1;
+}
+
+.headerBtn{
+background:white;
+color:#e30613;
+border:0;
+border-radius:11px;
+padding:10px 13px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.container{
+max-width:1100px;
+margin:auto;
+padding:18px;
+}
+
+.hero{
+background:linear-gradient(135deg,#e30613,#ff5a64);
+color:white;
+padding:28px 20px;
+border-radius:22px;
+margin-bottom:20px;
+}
+
+.hero h1{
+font-size:29px;
+margin-bottom:8px;
+}
+
+.hero p{
+opacity:.9;
+}
+
+.search{
+width:100%;
+margin-top:18px;
+padding:15px;
+border:0;
+border-radius:12px;
+font-size:16px;
+outline:none;
+}
+
+.categories{
+display:flex;
+gap:9px;
+overflow-x:auto;
+padding-bottom:8px;
+}
+
+.category{
+white-space:nowrap;
+background:white;
+border:0;
+border-radius:12px;
+padding:12px 17px;
+cursor:pointer;
+}
+
+.category.active{
+background:#e30613;
+color:white;
+}
+
+.sectionTitle{
+margin:25px 0 14px;
+font-size:22px;
+}
+
+.restaurants{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:15px;
+}
+
+.restaurant{
+background:white;
+border-radius:18px;
+overflow:hidden;
+box-shadow:0 3px 12px #0001;
+}
+
+.restaurantImage{
+height:145px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:70px;
+background:#ffe7e7;
+}
+
+.restaurantInfo{
+padding:15px;
+}
+
+.rating{
+color:#efa500;
+margin:7px 0;
+}
+
+.muted{
+color:#777;
+font-size:14px;
+}
+
+.foods{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:15px;
+}
+
+.food{
+background:white;
+padding:16px;
+border-radius:17px;
+box-shadow:0 3px 10px #0001;
+}
+
+.food h3{
+margin-bottom:8px;
+}
+
+.food p{
+color:#777;
+font-size:14px;
+line-height:1.6;
+}
+
+.foodBottom{
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-top:15px;
+}
+
+.price{
+color:#e30613;
+font-weight:bold;
+}
+
+.add{
+background:#e30613;
+color:white;
+border:0;
+border-radius:9px;
+padding:9px 14px;
+cursor:pointer;
+}
+
+footer{
+background:#222;
+color:white;
+text-align:center;
+padding:30px;
+margin-top:40px;
+}
+
+.modal{
+display:none;
+position:fixed;
+inset:0;
+background:#0008;
+z-index:200;
+align-items:center;
+justify-content:center;
+padding:18px;
+}
+
+.modal.show{
+display:flex;
+}
+
+.modalBox{
+background:white;
+width:100%;
+max-width:520px;
+max-height:90vh;
+overflow:auto;
+border-radius:20px;
+padding:20px;
+}
+
+.modalHeader{
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:18px;
+}
+
+.close{
+width:36px;
+height:36px;
+border:0;
+border-radius:50%;
+background:#eee;
+font-size:20px;
+cursor:pointer;
+}
+
+.cartItem{
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:14px 0;
+border-bottom:1px solid #eee;
+}
+
+.total{
+display:flex;
+justify-content:space-between;
+font-size:20px;
+font-weight:bold;
+margin:20px 0;
+}
+
+.primary{
+width:100%;
+padding:14px;
+background:#e30613;
+color:white;
+border:0;
+border-radius:12px;
+font-size:17px;
+cursor:pointer;
+}
+
+.field{
+margin-bottom:14px;
+}
+
+.field label{
+display:block;
+margin-bottom:6px;
+}
+
+.field input,
+.field textarea{
+width:100%;
+padding:13px;
+border:1px solid #ddd;
+border-radius:10px;
+outline:none;
+}
+
+.profile{
+text-align:center;
+padding:20px;
+}
+
+.profileIcon{
+font-size:60px;
+margin-bottom:10px;
+}
+
+.empty{
+text-align:center;
+padding:30px;
+color:#777;
+}
+
 @media(max-width:600px){
-.logo{font-size:20px}
-.location{display:none}
-.hero h1{font-size:24px}
-.container{padding:13px}
+
+.logo{
+font-size:19px;
+}
+
+.container{
+padding:13px;
+}
+
+.hero h1{
+font-size:24px;
+}
+
 }
 </style>
 </head>
@@ -63,78 +323,115 @@ footer{margin-top:35px;background:#222;color:#fff;text-align:center;padding:28px
 <body>
 
 <header>
+
 <div class="nav">
 
-<div class="logo">طلبات عين التمر 🍔</div>
+<div class="logo">
+طلبات عين التمر 🇮🇶
+</div>
 
-<button class="btn white" onclick="openProfile()">
+<button class="headerBtn" onclick="openProfile()">
 👤 حسابي
 </button>
 
-<button class="btn white" onclick="openCart()">
+<button class="headerBtn" onclick="openCart()">
 🛒 <span id="cartCount">0</span>
 </button>
 
 </div>
+
 </header>
+
 
 <main class="container">
 
 <section class="hero">
-<h1>شنو نفسك تاكل اليوم؟ 😋</h1>
-<p>اطلب من مطاعم عين التمر بسهولة</p>
+
+<h1>
+شنو نفسك تاكل اليوم؟ 😋
+</h1>
+
+<p>
+اطلب من مطاعم عين التمر بسهولة وسرعة
+</p>
 
 <input
 class="search"
 id="search"
 placeholder="ابحث عن مطعم أو وجبة..."
-oninput="searchAll()"
+oninput="searchEverything()"
 >
+
 </section>
+
 
 <div class="categories">
 
-<button class="cat active" onclick="filterFood('الكل',this)">
+<button class="category active"
+onclick="showCategory('الكل',this)">
 الكل 🍽️
 </button>
 
-<button class="cat" onclick="filterFood('برغر',this)">
+<button class="category"
+onclick="showCategory('برغر',this)">
 برغر 🍔
 </button>
 
-<button class="cat" onclick="filterFood('بيتزا',this)">
+<button class="category"
+onclick="showCategory('بيتزا',this)">
 بيتزا 🍕
 </button>
 
-<button class="cat" onclick="filterFood('دجاج',this)">
+<button class="category"
+onclick="showCategory('دجاج',this)">
 دجاج 🍗
 </button>
 
-<button class="cat" onclick="filterFood('مشاوي',this)">
+<button class="category"
+onclick="showCategory('مشاوي',this)">
 مشاوي 🍖
 </button>
 
-<button class="cat" onclick="filterFood('حلويات',this)">
+<button class="category"
+onclick="showCategory('حلويات',this)">
 حلويات 🍰
 </button>
 
 </div>
 
-<h2 class="section">المطاعم في عين التمر 📍</h2>
 
-<div class="restaurants" id="restaurants"></div>
+<h2 class="sectionTitle">
+المطاعم في عين التمر 📍
+</h2>
 
-<h2 class="section">الوجبات الأكثر طلباً 🔥</h2>
+<div
+class="restaurants"
+id="restaurants">
+</div>
 
-<div class="foods" id="foods"></div>
+
+<h2 class="sectionTitle">
+الوجبات 🍴
+</h2>
+
+<div
+class="foods"
+id="foods">
+</div>
 
 </main>
 
+
 <footer>
-<h3>طلبات عين التمر 🇮🇶</h3>
+
+<h3>
+طلبات عين التمر 🇮🇶
+</h3>
+
 <p style="margin-top:8px;color:#aaa">
 منصة محلية لطلب الطعام
 </p>
+
 </footer>
 
 
@@ -142,18 +439,32 @@ oninput="searchAll()"
 
 <div class="modal" id="cartModal">
 
-<div class="box">
+<div class="modalBox">
 
-<div class="head">
-<h2>سلة الطلب 🛒</h2>
-<button class="close" onclick="closeCart()">×</button>
+<div class="modalHeader">
+
+<h2>
+سلة الطلب 🛒
+</h2>
+
+<button class="close" onclick="closeCart()">
+×
+</button>
+
 </div>
 
 <div id="cartItems"></div>
 
 <div class="total">
-<span>الإجمالي</span>
-<span id="total">0 د.ع</span>
+
+<span>
+الإجمالي
+</span>
+
+<span id="total">
+0 د.ع
+</span>
+
 </div>
 
 <button class="primary" onclick="checkout()">
@@ -161,6 +472,7 @@ oninput="searchAll()"
 </button>
 
 </div>
+
 </div>
 
 
@@ -168,21 +480,32 @@ oninput="searchAll()"
 
 <div class="modal" id="profileModal">
 
-<div class="box">
+<div class="modalBox">
 
-<div class="head">
-<h2>حسابي 👤</h2>
-<button class="close" onclick="closeProfile()">×</button>
+<div class="modalHeader">
+
+<h2>
+حسابي 👤
+</h2>
+
+<button class="close" onclick="closeProfile()">
+×
+</button>
+
 </div>
 
 <div class="profile">
 
-<div class="profileIcon">👤</div>
+<div class="profileIcon">
+👤
+</div>
 
-<h3 id="profileName">زائر</h3>
+<h3 id="profileName">
+زائر
+</h3>
 
-<p class="muted" style="margin:10px 0 18px">
-سجّل اسمك لتخصيص حسابك
+<p style="color:#777;margin:10px 0 20px">
+يمكنك تسجيل اسمك في التطبيق
 </p>
 
 <button class="primary" onclick="login()">
@@ -192,40 +515,79 @@ oninput="searchAll()"
 </div>
 
 </div>
+
 </div>
 
 
-<!-- تأكيد الطلب -->
+<!-- الطلب -->
 
 <div class="modal" id="checkoutModal">
 
-<div class="box">
+<div class="modalBox">
 
-<div class="head">
-<h2>بيانات التوصيل 📦</h2>
-<button class="close" onclick="closeCheckout()">×</button>
+<div class="modalHeader">
+
+<h2>
+بيانات التوصيل 📦
+</h2>
+
+<button class="close" onclick="closeCheckout()">
+×
+</button>
+
 </div>
 
 <div class="field">
-<label>الاسم</label>
-<input id="name" placeholder="اكتب اسمك">
+
+<label>
+الاسم
+</label>
+
+<input
+id="name"
+placeholder="اكتب اسمك"
+>
+
 </div>
+
 
 <div class="field">
-<label>رقم الهاتف</label>
-<input id="phone" placeholder="07xxxxxxxxx">
+
+<label>
+رقم الهاتف
+</label>
+
+<input
+id="phone"
+placeholder="07xxxxxxxxx"
+>
+
 </div>
+
 
 <div class="field">
-<label>العنوان</label>
-<textarea id="address" rows="3" placeholder="المنطقة والشارع وأقرب نقطة دالة"></textarea>
+
+<label>
+العنوان
+</label>
+
+<textarea
+id="address"
+rows="3"
+placeholder="المنطقة والشارع وأقرب نقطة دالة">
+</textarea>
+
 </div>
 
-<button class="primary" onclick="sendOrder()">
+
+<button
+class="primary"
+onclick="sendOrder()">
 إرسال الطلب 🚀
 </button>
 
 </div>
+
 </div>
 
 
@@ -235,7 +597,7 @@ const restaurants=[
 
 {
 name:"مطعم عين التمر",
-category:"مطعم عراقي",
+type:"مطعم عراقي",
 rating:"4.8",
 time:"25 - 35 دقيقة",
 icon:"🍽️"
@@ -243,7 +605,7 @@ icon:"🍽️"
 
 {
 name:"برغر تايم",
-category:"برغر",
+type:"برغر",
 rating:"4.7",
 time:"20 - 30 دقيقة",
 icon:"🍔"
@@ -251,7 +613,7 @@ icon:"🍔"
 
 {
 name:"بيتزا العراق",
-category:"بيتزا",
+type:"بيتزا",
 rating:"4.6",
 time:"30 - 40 دقيقة",
 icon:"🍕"
@@ -259,7 +621,7 @@ icon:"🍕"
 
 {
 name:"مشاوي الفرات",
-category:"مشاوي",
+type:"مشاوي",
 rating:"4.9",
 time:"30 - 45 دقيقة",
 icon:"🍖"
@@ -313,9 +675,23 @@ category:"مشاوي"
 },
 
 {
+name:"تكة لحم",
+description:"قطع لحم مشوية مع خبز وسلطة",
+price:10000,
+category:"مشاوي"
+},
+
+{
 name:"كيكة شوكولاتة",
 description:"كيكة شوكولاتة مع كريمة",
 price:6000,
+category:"حلويات"
+},
+
+{
+name:"بقلاوة",
+description:"بقلاوة عراقية مشكلة",
+price:5000,
 category:"حلويات"
 }
 
@@ -323,41 +699,49 @@ category:"حلويات"
 
 
 let cart=[];
-let currentCategory="الكل";
+
+let selectedCategory="الكل";
 
 
-function money(number){
+function money(value){
 
-return number.toLocaleString("ar-IQ")+" د.ع";
+return value.toLocaleString("ar-IQ")+" د.ع";
 
 }
 
 
 function renderRestaurants(){
 
-const box=document.getElementById("restaurants");
+const box=
+document.getElementById("restaurants");
 
 box.innerHTML="";
 
-restaurants.forEach(r=>{
+restaurants.forEach(function(r){
 
 box.innerHTML+=`
 
 <div class="restaurant">
 
-<div class="pic">${r.icon}</div>
+<div class="restaurantImage">
+${r.icon}
+</div>
 
-<div class="info">
+<div class="restaurantInfo">
 
 <h3>${r.name}</h3>
 
-<p class="muted">${r.category}</p>
+<p class="muted">
+${r.type}
+</p>
 
 <div class="rating">
 ★★★★★ ${r.rating}
 </div>
 
-<p class="muted">🛵 ${r.time}</p>
+<p class="muted">
+🛵 ${r.time}
+</p>
 
 </div>
 
@@ -372,29 +756,52 @@ box.innerHTML+=`
 
 function renderFoods(){
 
-const box=document.getElementById("foods");
-
-let list=foods;
-
-if(currentCategory!=="الكل"){
-
-list=foods.filter(
-f=>f.category===currentCategory
-);
-
-}
+const box=
+document.getElementById("foods");
 
 box.innerHTML="";
 
-list.forEach((food,index)=>{
+
+let list=foods;
+
+
+if(selectedCategory!=="الكل"){
+
+list=foods.filter(function(food){
+
+return food.category===selectedCategory;
+
+});
+
+}
+
+
+if(list.length===0){
+
+box.innerHTML=
+'<div class="empty">لا توجد وجبات في هذا التصنيف</div>';
+
+return;
+
+}
+
+
+list.forEach(function(food){
+
+const originalIndex=
+foods.indexOf(food);
 
 box.innerHTML+=`
 
 <div class="food">
 
-<h3>${food.name}</h3>
+<h3>
+${food.name}
+</h3>
 
-<p>${food.description}</p>
+<p>
+${food.description}
+</p>
 
 <div class="foodBottom">
 
@@ -402,8 +809,9 @@ box.innerHTML+=`
 ${money(food.price)}
 </span>
 
-<button class="add"
-onclick="addToCart(${foods.indexOf(food)})">
+<button
+class="add"
+onclick="addToCart(${originalIndex})">
 + أضف
 </button>
 
@@ -418,17 +826,25 @@ onclick="addToCart(${foods.indexOf(food)})">
 }
 
 
-function filterFood(category,button){
+function showCategory(category,button){
 
-currentCategory=category;
+selectedCategory=category;
+
 
 document
-.querySelectorAll(".cat")
-.forEach(b=>b.classList.remove("active"));
+.querySelectorAll(".category")
+.forEach(function(item){
+
+item.classList.remove("active");
+
+});
+
 
 button.classList.add("active");
 
+
 renderFoods();
+
 
 document
 .getElementById("foods")
@@ -439,45 +855,44 @@ block:"start"
 
 }
 
-currentCategory=category;
 
+function searchEverything(){
+
+const text=
 document
-.querySelectorAll(".cat")
-.forEach(b=>b.classList.remove("active"));
-
-button.classList.add("active");
-
-renderFoods();
-
-}
-
-
-function searchAll(){
-
-const value=
-document.getElementById("search")
+.getElementById("search")
 .value
 .toLowerCase();
 
+
 document
 .querySelectorAll(".restaurant")
-.forEach(card=>{
+.forEach(function(item){
 
-card.style.display=
-card.innerText.toLowerCase().includes(value)
-?"block"
-:"none";
+item.style.display=
+item.innerText
+.toLowerCase()
+.includes(text)
+?
+"block"
+:
+"none";
 
 });
 
+
 document
 .querySelectorAll(".food")
-.forEach(card=>{
+.forEach(function(item){
 
-card.style.display=
-card.innerText.toLowerCase().includes(value)
-?"block"
-:"none";
+item.style.display=
+item.innerText
+.toLowerCase()
+.includes(text)
+?
+"block"
+:
+"none";
 
 });
 
@@ -490,52 +905,73 @@ cart.push(foods[index]);
 
 updateCart();
 
-alert("تمت إضافة "+foods[index].name+" إلى السلة 🛒");
+alert(
+"تمت إضافة "+
+foods[index].name+
+" إلى السلة 🛒"
+);
 
 }
 
 
 function updateCart(){
 
-document.getElementById("cartCount").innerText=cart.length;
+document
+.getElementById("cartCount")
+.innerText=cart.length;
 
 }
 
 
 function openCart(){
 
-const box=document.getElementById("cartItems");
+const box=
+document.getElementById("cartItems");
+
 
 if(cart.length===0){
 
 box.innerHTML=
 '<div class="empty">السلة فارغة 🛒</div>';
 
-document.getElementById("total").innerText="0 د.ع";
+document
+.getElementById("total")
+.innerText="0 د.ع";
 
-}else{
+}
+
+else{
 
 let total=0;
 
 box.innerHTML="";
 
-cart.forEach((item,index)=>{
+
+cart.forEach(function(item,index){
 
 total+=item.price;
 
 box.innerHTML+=`
 
-<div class="item">
+<div class="cartItem">
 
 <div>
-<strong>${item.name}</strong>
 
-<div class="price" style="margin-top:5px">
+<strong>
+${item.name}
+</strong>
+
+<div class="price"
+style="margin-top:5px">
+
 ${money(item.price)}
-</div>
+
 </div>
 
-<button class="add"
+</div>
+
+<button
+class="add"
 onclick="removeItem(${index})">
 حذف
 </button>
@@ -546,9 +982,14 @@ onclick="removeItem(${index})">
 
 });
 
-document.getElementById("total").innerText=money(total);
+
+document
+.getElementById("total")
+.innerText=
+money(total);
 
 }
+
 
 document
 .getElementById("cartModal")
@@ -587,7 +1028,9 @@ return;
 
 }
 
+
 closeCart();
+
 
 document
 .getElementById("checkoutModal")
@@ -608,31 +1051,51 @@ document
 function sendOrder(){
 
 const name=
-document.getElementById("name").value.trim();
+document
+.getElementById("name")
+.value
+.trim();
+
 
 const phone=
-document.getElementById("phone").value.trim();
+document
+.getElementById("phone")
+.value
+.trim();
+
 
 const address=
-document.getElementById("address").value.trim();
+document
+.getElementById("address")
+.value
+.trim();
+
 
 if(!name||!phone||!address){
 
-alert("يرجى إدخال الاسم ورقم الهاتف والعنوان");
+alert(
+"يرجى إدخال الاسم ورقم الهاتف والعنوان"
+);
 
 return;
 
 }
 
+
 const orderNumber=
-"IAT"+Math.floor(
-100000+Math.random()*900000
+"IAT"+
+Math.floor(
+100000+
+Math.random()*900000
 );
 
+
 alert(
-"تم إرسال طلبك بنجاح 🎉\n"+
-"رقم الطلب: "+orderNumber
+"تم إرسال طلبك بنجاح 🎉\n\n"+
+"رقم الطلب: "+
+orderNumber
 );
+
 
 cart=[];
 
@@ -663,15 +1126,26 @@ document
 
 function login(){
 
-const name=prompt("اكتب اسمك:");
+const name=
+prompt("اكتب اسمك:");
 
-if(!name)return;
+if(!name){
+
+return;
+
+}
+
 
 document
 .getElementById("profileName")
 .innerText=name;
 
-alert("أهلاً بك يا "+name+" 👋");
+
+alert(
+"أهلاً بك يا "+
+name+
+" 👋"
+);
 
 }
 
