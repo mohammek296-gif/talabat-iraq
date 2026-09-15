@@ -1,1015 +1,3359 @@
-<span>
-                    عين التمر
-                </span>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>عين التمر | طلبات</title>
 
-            </div>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-            <div class="header-actions">
+<link
+ rel="stylesheet"
+ href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
 
-                <button
-                    class="btn"
-                    type="button"
-                    onclick="showPage('home')"
-                >
-                    الرئيسية
-                </button>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ font-family:Cairo,Arial,sans-serif;
+ background:#f5f6f8;
+ color:#222
+}
+button,input,textarea,select{font-family:inherit}
+button{cursor:pointer;border:0}
+.header{
+ position:sticky;
+ top:0;
+ z-index:1000;
+ background:#fff;
+ box-shadow:0 2px 12px #0001;
+ padding:12px 18px
+}
+.header-inner{
+ max-width:1200px;
+ margin:auto;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:15px
+}
+.logo{
+ font-size:24px;
+ font-weight:800;
+ color:#f4511e;
+ cursor:pointer
+}
+.nav{
+ display:flex;
+ gap:8px;
+ flex-wrap:wrap
+}
+.btn{
+ padding:10px 15px;
+ border-radius:10px;
+ font-weight:700
+}
+.btn-primary{background:#f4511e;color:white}
+.btn-dark{background:#222;color:white}
+.btn-light{background:#eee;color:#222}
+.btn-success{background:#16a34a;color:white}
+.btn-danger{background:#dc2626;color:white}
+.btn-warning{background:#f59e0b;color:white}
+.container{
+ max-width:1200px;
+ margin:auto;
+ padding:20px
+}
+.hero{
+ background:linear-gradient(135deg,#ff7043,#e64a19);
+ color:white;
+ border-radius:20px;
+ padding:30px;
+ margin-bottom:25px
+}
+.hero h1{margin:0 0 8px;font-size:32px}
+.hero p{margin:0;opacity:.95}
+.search{
+ width:100%;
+ padding:14px 16px;
+ border:1px solid #ddd;
+ border-radius:12px;
+ background:white;
+ font-size:16px
+}
+.section-title{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin:25px 0 15px
+}
+.grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+ gap:16px
+}
+.card{
+ background:white;
+ border-radius:16px;
+ box-shadow:0 2px 10px #0000000d;
+ overflow:hidden;
+ border:1px solid #eee
+}
+.card-body{padding:15px}
+.food-img,.restaurant-img{
+ width:100%;
+ height:180px;
+ object-fit:cover;
+ background:#eee
+}
+.food-img{height:160px}
+.price{
+ color:#f4511e;
+ font-size:20px;
+ font-weight:800
+}
+.badge{
+ display:inline-block;
+ padding:5px 9px;
+ border-radius:20px;
+ font-size:12px;
+ font-weight:700
+}
+.badge-open{background:#dcfce7;color:#15803d}
+.badge-closed{background:#fee2e2;color:#b91c1c}
+.panel{
+ background:white;
+ border-radius:16px;
+ padding:20px;
+ box-shadow:0 2px 10px #0001;
+ margin-bottom:20px
+}
+.form-group{margin-bottom:14px}
+.form-group label{
+ display:block;
+ margin-bottom:6px;
+ font-weight:700
+}
+.form-control{
+ width:100%;
+ padding:12px;
+ border:1px solid #ddd;
+ border-radius:10px;
+ font-size:15px;
+ background:#fff
+}
+textarea.form-control{min-height:100px;resize:vertical}
+.modal{
+ position:fixed;
+ inset:0;
+ background:#0008;
+ display:none;
+ align-items:center;
+ justify-content:center;
+ z-index:3000;
+ padding:15px
+}
+.modal.active{display:flex}
+.modal-box{
+ background:white;
+ width:min(600px,100%);
+ max-height:92vh;
+ overflow:auto;
+ border-radius:18px;
+ padding:20px
+}
+.modal-head{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ margin-bottom:15px
+}
+.close{
+ background:#eee;
+ width:35px;
+ height:35px;
+ border-radius:50%;
+ font-size:20px
+}
+.tabs{
+ display:flex;
+ gap:8px;
+ overflow:auto;
+ margin-bottom:20px
+}
+.tab{
+ padding:10px 16px;
+ background:#eee;
+ border-radius:10px;
+ white-space:nowrap
+}
+.tab.active{background:#f4511e;color:#fff}
+.hidden{display:none!important}
+.empty{
+ padding:40px 20px;
+ text-align:center;
+ color:#777
+}
+.cart{
+ position:fixed;
+ left:20px;
+ bottom:20px;
+ z-index:1500;
+ width:60px;
+ height:60px;
+ border-radius:50%;
+ background:#f4511e;
+ color:white;
+ font-size:24px;
+ box-shadow:0 5px 20px #0003
+}
+.cart-count{
+ position:absolute;
+ top:-5px;
+ right:-5px;
+ background:#111;
+ color:white;
+ width:24px;
+ height:24px;
+ border-radius:50%;
+ font-size:12px;
+ display:flex;
+ align-items:center;
+ justify-content:center
+}
+.cart-item{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:10px;
+ border-bottom:1px solid #eee;
+ padding:12px 0
+}
+.qty{
+ display:flex;
+ align-items:center;
+ gap:8px
+}
+.qty button{
+ width:30px;
+ height:30px;
+ border-radius:8px;
+ background:#eee
+}
+.stat-grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+ gap:15px
+}
+.stat{
+ background:#fff;
+ padding:20px;
+ border-radius:15px;
+ box-shadow:0 2px 10px #0001
+}
+.stat-number{
+ font-size:30px;
+ font-weight:800;
+ color:#f4511e
+}
+.table-wrap{overflow:auto}
+table{
+ width:100%;
+ border-collapse:collapse;
+ min-width:700px
+}
+th,td{
+ padding:12px;
+ border-bottom:1px solid #eee;
+ text-align:right
+}
+th{background:#fafafa}
+.order-card{
+ border:1px solid #ddd;
+ border-radius:14px;
+ padding:15px;
+ margin-bottom:12px
+}
+.order-head{
+ display:flex;
+ justify-content:space-between;
+ gap:10px;
+ flex-wrap:wrap
+}
+.status{
+ padding:5px 10px;
+ border-radius:20px;
+ font-size:12px;
+ font-weight:700;
+ background:#eee
+}
+.status-new{background:#dbeafe;color:#1d4ed8}
+.status-accepted{background:#fef3c7;color:#92400e}
+.status-preparing{background:#ffedd5;color:#c2410c}
+.status-ready{background:#dcfce7;color:#15803d}
+.status-completed{background:#dcfce7;color:#166534}
+.status-rejected{background:#fee2e2;color:#991b1b}
+.status-assigned{background:#e0e7ff;color:#3730a3}
+.status-picked_up{background:#fef3c7;color:#92400e}
+.status-delivered{background:#dcfce7;color:#166534}
+#map{
+ height:350px;
+ border-radius:15px;
+ overflow:hidden
+}
+.toast{
+ position:fixed;
+ top:80px;
+ left:50%;
+ transform:translateX(-50%);
+ z-index:5000;
+ background:#222;
+ color:#fff;
+ padding:12px 20px;
+ border-radius:10px;
+ display:none;
+ box-shadow:0 4px 15px #0003
+}
+.toast.show{display:block}
+footer{
+ margin-top:50px;
+ padding:30px;
+ background:#222;
+ color:#ddd;
+ text-align:center
+}
+@media(max-width:700px){
+ .hero h1{font-size:25px}
+ .container{padding:12px}
+ .header-inner{align-items:flex-start}
+ .nav{justify-content:flex-end}
+ .logo{font-size:20px}
+}
+</style>
+</head>
 
-                <button
-                    class="btn"
-                    type="button"
-                    onclick="openCart()"
-                >
-                    🛒 السلة
-                    <span id="cartCount">0</span>
-                </button>
+<body>
 
-                <button
-                    id="loginHeaderButton"
-                    class="btn btn-primary"
-                    type="button"
-                    onclick="openAuthChooser()"
-                >
-                    تسجيل الدخول
-                </button>
+<div id="toast" class="toast"></div>
 
-                <button
-                    id="logoutHeaderButton"
-                    class="btn btn-danger"
-                    type="button"
-                    onclick="logout()"
-                    style="display:none"
-                >
-                    تسجيل الخروج
-                </button>
+<header class="header">
+ <div class="header-inner">
+  <div class="logo" onclick="showHome()">عين التمر 🍔</div>
+  <div class="nav">
+   <button class="btn btn-light" onclick="showHome()">الرئيسية</button>
+   <button class="btn btn-light" onclick="openMyOrders()">طلباتي</button>
+   <button class="btn btn-primary" id="authButton" onclick="openAuth()">تسجيل الدخول</button>
+  </div>
+ </div>
+</header>
 
-            </div>
+<main class="container">
 
-        </div>
+<section id="homePage">
 
-    </header>
+ <div class="hero">
+  <h1>اطلب أكلك من مطاعم عين التمر</h1>
+  <p>اختر مطعمك، اطلب وجبتك وتابع طلبك خطوة بخطوة.</p>
+ </div>
 
+ <input
+  id="searchInput"
+  class="search"
+  placeholder="ابحث عن مطعم أو وجبة..."
+  oninput="renderHome()"
+ >
 
-    <!-- =========================
-         MAIN
-    ========================= -->
+ <div class="section-title">
+  <h2>المطاعم</h2>
+  <button class="btn btn-light" onclick="loadHomeData()">تحديث</button>
+ </div>
 
-    <main>
+ <div id="restaurantsGrid" class="grid"></div>
 
-        <!-- HOME -->
+ <div class="section-title">
+  <h2>الوجبات</h2>
+ </div>
 
-        <section
-            id="homePage"
-            class="page active"
-        >
+ <div id="foodsGrid" class="grid"></div>
 
-            <div class="container hero">
+</section>
 
-                <div class="hero-box">
+<section id="dashboardPage" class="hidden">
 
-                    <h1 class="hero-title">
-                        منصة عين التمر للتوصيل
-                    </h1>
+ <div class="section-title">
+  <h2 id="dashboardTitle">لوحة التحكم</h2>
+  <button class="btn btn-light" onclick="showHome()">الرئيسية</button>
+ </div>
 
-                    <p class="hero-description">
-                        اطلب من المطاعم، واستلم طلبك عن طريق الدليفري،
-                        مع نظام متكامل للمطاعم والمندوبين والإدارة.
-                    </p>
+ <div id="dashboardContent"></div>
 
+</section>
 
-                    <div class="roles">
+</main>
 
-                        <div
-                            class="role-card"
-                            onclick="openAuthChooser('customer')"
-                        >
+<button class="cart" onclick="openCart()">
+ 🛒
+ <span id="cartCount" class="cart-count">0</span>
+</button>
 
-                            <div class="role-icon">
-                                👤
-                            </div>
-
-                            <h3>
-                                الزبون
-                            </h3>
-
-                            <p>
-                                تصفح المطاعم والأكلات وأنشئ طلبك وتابع حالته.
-                            </p>
-
-                        </div>
+<footer>
+ تطبيق عين التمر © 2026
+</footer>
 
 
-                        <div
-                            class="role-card"
-                            onclick="openAuthChooser('restaurant')"
-                        >
+<!-- AUTH MODAL -->
+<div id="authModal" class="modal">
+ <div class="modal-box">
+  <div class="modal-head">
+   <h2 id="authTitle">تسجيل الدخول</h2>
+   <button class="close" onclick="closeModal('authModal')">×</button>
+  </div>
 
-                            <div class="role-icon">
-                                🍔
-                            </div>
+  <div class="tabs">
+   <button id="loginTab" class="tab active" onclick="switchAuth('login')">دخول</button>
+   <button id="registerTab" class="tab" onclick="switchAuth('register')">إنشاء حساب</button>
+  </div>
 
-                            <h3>
-                                المطعم
-                            </h3>
+  <div id="loginForm">
+   <div class="form-group">
+    <label>البريد الإلكتروني</label>
+    <input id="loginEmail" class="form-control" type="email">
+   </div>
 
-                            <p>
-                                إدارة الأكلات واستقبال الطلبات وتحديث حالتها.
-                            </p>
+   <div class="form-group">
+    <label>كلمة المرور</label>
+    <input id="loginPassword" class="form-control" type="password">
+   </div>
 
-                        </div>
+   <button class="btn btn-primary" style="width:100%" onclick="login()">تسجيل الدخول</button>
+  </div>
 
+  <div id="registerForm" class="hidden">
 
-                        <div
-                            class="role-card"
-                            onclick="openAuthChooser('driver')"
-                        >
+   <div class="form-group">
+    <label>نوع الحساب</label>
+    <select id="registerRole" class="form-control" onchange="changeRegisterFields()">
+     <option value="customer">زبون</option>
+     <option value="restaurant_owner">صاحب مطعم</option>
+     <option value="driver">سائق</option>
+    </select>
+   </div>
 
-                            <div class="role-icon">
-                                🛵
-                            </div>
+   <div class="form-group">
+    <label>الاسم الكامل</label>
+    <input id="registerName" class="form-control">
+   </div>
 
-                            <h3>
-                                الدليفري
-                            </h3>
+   <div class="form-group">
+    <label>رقم الهاتف</label>
+    <input id="registerPhone" class="form-control">
+   </div>
 
-                            <p>
-                                استقبال الطلبات المسندة وتتبع موقع التوصيل.
-                            </p>
-
-                        </div>
-
-
-                        <div
-                            class="role-card"
-                            onclick="
-                            <label class="form-label">
-                    عنوان التوصيل
-                </label>
-
-                <textarea
-                    id="checkoutAddress"
-                    class="textarea"
-                    placeholder="اكتب عنوان التوصيل بالتفصيل"
-                    required
-                ></textarea>
-
-            </div>
-
-
-            <div class="card">
-
-                <div class="cart-total">
-
-                    <span>
-                        إجمالي الطلب
-                    </span>
-
-                    <span id="checkoutTotal">
-                        0 د.ع
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <button
-                id="submitOrderButton"
-                class="btn btn-primary btn-block"
-                type="submit"
-                style="margin-top:15px"
-            >
-                تأكيد وإرسال الطلب
-            </button>
-
-        </form>
-
+   <div id="restaurantRegisterFields" class="hidden">
+    <div class="form-group">
+     <label>اسم المطعم</label>
+     <input id="registerRestaurantName" class="form-control">
     </div>
+   </div>
 
+   <div class="form-group">
+    <label>البريد الإلكتروني</label>
+    <input id="registerEmail" class="form-control" type="email">
+   </div>
+
+   <div class="form-group">
+    <label>كلمة المرور</label>
+    <input id="registerPassword" class="form-control" type="password">
+   </div>
+
+   <button class="btn btn-primary" style="width:100%" onclick="register()">إنشاء الحساب</button>
+  </div>
+
+ </div>
 </div>
 
 
-<!-- FOOD EDITOR -->
-<div id="foodEditorModal" class="modal">
+<!-- CART MODAL -->
+<div id="cartModal" class="modal">
+ <div class="modal-box">
+  <div class="modal-head">
+   <h2>سلة الطلب</h2>
+   <button class="close" onclick="closeModal('cartModal')">×</button>
+  </div>
 
-    <div class="modal-box">
+  <div id="cartItems"></div>
 
-        <div class="modal-header">
+  <div id="cartCheckout" class="hidden">
 
-            <h3 id="foodEditorTitle">
-                إضافة أكلة
-            </h3>
+   <hr>
 
-            <button
-                class="close-button"
-                type="button"
-                onclick="closeModal('foodEditorModal')"
-            >
-                ×
-            </button>
+   <div class="form-group">
+    <label>الاسم</label>
+    <input id="orderName" class="form-control">
+   </div>
 
-        </div>
+   <div class="form-group">
+    <label>رقم الهاتف</label>
+    <input id="orderPhone" class="form-control">
+   </div>
 
+   <div class="form-group">
+    <label>عنوان التوصيل</label>
+    <textarea id="orderAddress" class="form-control"></textarea>
+   </div>
 
-        <form
-            id="foodForm"
-            onsubmit="saveFood(event)"
-        >
+   <h3>المجموع: <span id="cartTotal">0</span> د.ع</h3>
 
-            <input
-                id="editingFoodId"
-                type="hidden"
-            >
+   <button class="btn btn-primary" style="width:100%" onclick="createOrder()">
+    تأكيد الطلب
+   </button>
+  </div>
 
-
-            <div class="form-group">
-
-                <label class="form-label">
-                    اسم الأكلة
-                </label>
-
-                <input
-                    id="foodName"
-                    class="input"
-                    required
-                >
-
-            </div>
+ </div>
+</div>
 
 
-            <div class="form-group">
+<!-- FOOD MODAL -->
+<div id="foodModal" class="modal">
+ <div class="modal-box">
 
-                <label class="form-label">
-                    السعر
-                </label>
+  <div class="modal-head">
+   <h2 id="foodModalTitle">إضافة وجبة</h2>
+   <button class="close" onclick="closeModal('foodModal')">×</button>
+  </div>
 
-                <input
-                    id="foodPrice"
-                    class="input"
-                    type="number"
-                    min="0"
-                    step="1"
-                    required
-                >
+  <input type="hidden" id="foodId">
 
-            </div>
+  <div class="form-group">
+   <label>اسم الوجبة</label>
+   <input id="foodName" class="form-control">
+  </div>
 
+  <div class="form-group">
+   <label>السعر</label>
+   <input id="foodPrice" class="form-control" type="number">
+  </div>
 
-            <div class="form-group">
+  <div class="form-group">
+   <label>التصنيف</label>
+   <input id="foodCategory" class="form-control">
+  </div>
 
-                <label class="form-label">
-                    التصنيف
-                </label>
+  <div class="form-group">
+   <label>الوصف</label>
+   <textarea id="foodDescription" class="form-control"></textarea>
+  </div>
 
-                <input
-                    id="foodCategory"
-                    class="input"
-                >
+  <div class="form-group">
+   <label>رابط الصورة</label>
+   <input id="foodImage" class="form-control">
+  </div>
 
-            </div>
+  <button class="btn btn-primary" style="width:100%" onclick="saveFood()">
+   حفظ الوجبة
+  </button>
 
-
-            <div class="form-group">
-
-                <label class="form-label">
-                    رابط صورة الأكلة
-                </label>
-
-                <input
-                    id="foodImage"
-                    class="input"
-                    type="url"
-                >
-
-            </div>
+ </div>
+</div>
 
 
-            <div class="form-group">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-                <label class="form-label">
-                    وصف الأكلة
-                </label>
+<script type="module">
 
-                <textarea
-                    id="foodDescription"
-                    class="textarea"
-                ></textarea>
-
-            </div>
+import { createClient } from
+'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
 
-            <button
-                class="btn btn-primary btn-block"
-                type="submit"
-            >
-                حفظ الأكلة
-            </button>
+/* =========================
+   SUPABASE
+========================= */
 
-        </form>
+const SUPABASE_URL =
+'https://jyhmxyhzmxwprirhkjnh.supabase.co';
+
+const SUPABASE_KEY =
+'sb_publishable_BP1eIZYbAQR7Dh78-9GJrQ_oy8uuuhc';
+
+const db = createClient(
+ SUPABASE_URL,
+ SUPABASE_KEY
+);
+
+
+/* =========================
+   STATE
+========================= */
+
+let currentUser = null;
+let currentRole = 'customer';
+
+let restaurants = [];
+let foods = [];
+
+let cart = [];
+let cartRestaurantId = null;
+
+let restaurantData = null;
+let driverData = null;
+
+let map = null;
+let driverMarker = null;
+
+
+/* =========================
+   HELPERS
+========================= */
+
+window.toast = function(message){
+
+ const el = document.getElementById('toast');
+
+ el.textContent = message;
+ el.classList.add('show');
+
+ setTimeout(()=>{
+  el.classList.remove('show');
+ },3000);
+
+};
+
+
+window.closeModal = function(id){
+ document.getElementById(id).classList.remove('active');
+};
+
+
+function openModal(id){
+ document.getElementById(id).classList.add('active');
+}
+
+
+window.showHome = function(){
+
+ document.getElementById('homePage').classList.remove('hidden');
+ document.getElementById('dashboardPage').classList.add('hidden');
+
+ loadHomeData();
+
+};
+
+
+function showDashboard(){
+
+ document.getElementById('homePage').classList.add('hidden');
+ document.getElementById('dashboardPage').classList.remove('hidden');
+
+}
+
+
+/* =========================
+   AUTH
+========================= */
+
+window.openAuth = function(){
+
+ if(currentUser){
+
+  if(currentRole === 'restaurant_owner'){
+   openRestaurantDashboard();
+   return;
+  }
+
+  if(currentRole === 'driver'){
+   openDriverDashboard();
+   return;
+  }
+
+  if(currentRole === 'admin'){
+   openAdminDashboard();
+   return;
+  }
+
+  openMyOrders();
+  return;
+ }
+
+ openModal('authModal');
+
+};
+
+
+window.switchAuth = function(type){
+
+ const login = document.getElementById('loginForm');
+ const register = document.getElementById('registerForm');
+
+ const loginTab = document.getElementById('loginTab');
+ const registerTab = document.getElementById('registerTab');
+
+ if(type === 'login'){
+
+  login.classList.remove('hidden');
+  register.classList.add('hidden');
+
+  loginTab.classList.add('active');
+  registerTab.classList.remove('active');
+
+ }else{
+
+  login.classList.add('hidden');
+  register.classList.remove('hidden');
+
+  loginTab.classList.remove('active');
+  registerTab.classList.add('active');
+
+ }
+
+};
+
+
+window.changeRegisterFields = function(){
+
+ const role = document.getElementById('registerRole').value;
+
+ document
+ .getElementById('restaurantRegisterFields')
+ .classList.toggle(
+  'hidden',
+  role !== 'restaurant_owner'
+ );
+
+};
+
+
+window.register = async function(){
+
+ const role =
+ document.getElementById('registerRole').value;
+
+ const name =
+ document.getElementById('registerName').value.trim();
+
+ const phone =
+ document.getElementById('registerPhone').value.trim();
+
+ const email =
+ document.getElementById('registerEmail').value.trim();
+
+ const password =
+ document.getElementById('registerPassword').value;
+
+ const restaurantName =
+ document.getElementById('registerRestaurantName').value.trim();
+
+
+ if(!name || !email || !password){
+
+  toast('املأ جميع الحقول المطلوبة');
+
+  return;
+ }
+
+
+ if(role === 'restaurant_owner' && !restaurantName){
+
+  toast('اكتب اسم المطعم');
+
+  return;
+ }
+
+
+ const {data,error} =
+ await db.auth.signUp({
+
+  email,
+  password,
+
+  options:{
+   data:{
+    full_name:name,
+    owner_name:name,
+    phone,
+    role,
+    restaurant_name:
+     role === 'restaurant_owner'
+      ? restaurantName
+      : null
+   }
+  }
+
+ });
+
+
+ if(error){
+
+  toast(error.message);
+
+  return;
+ }
+
+
+ toast('تم إنشاء الحساب بنجاح');
+
+ closeModal('authModal');
+
+};
+
+
+window.login = async function(){
+
+ const email =
+ document.getElementById('loginEmail').value.trim();
+
+ const password =
+ document.getElementById('loginPassword').value;
+
+
+ const {data,error} =
+ await db.auth.signInWithPassword({
+  email,
+  password
+ });
+
+
+ if(error){
+
+  toast(error.message);
+
+  return;
+ }
+
+
+ currentUser = data.user;
+
+ await loadCurrentRole();
+
+ closeModal('authModal');
+
+ updateAuthButton();
+
+ routeByRole();
+
+};
+
+
+async function logout(){
+
+ await db.auth.signOut();
+
+ currentUser = null;
+ currentRole = 'customer';
+
+ cart = [];
+
+ updateCartCount();
+
+ updateAuthButton();
+
+ showHome();
+
+ toast('تم تسجيل الخروج');
+
+}
+
+
+window.logout = logout;
+
+
+async function loadCurrentRole(){
+
+ if(!currentUser){
+
+  currentRole = 'customer';
+
+  return;
+ }
+
+
+ const {data,error} =
+ await db.rpc('get_my_role');
+
+
+ if(!error && data){
+
+  currentRole = data;
+
+  return;
+
+ }
+
+
+ const role =
+ currentUser.user_metadata?.role;
+
+ currentRole =
+ role || 'customer';
+
+}
+
+
+function updateAuthButton(){
+
+ const btn =
+ document.getElementById('authButton');
+
+ if(currentUser){
+
+  btn.textContent =
+   currentUser.user_metadata?.full_name
+   || 'حسابي';
+
+ }else{
+
+  btn.textContent =
+   'تسجيل الدخول';
+
+ }
+
+}
+
+
+function routeByRole(){
+
+ if(currentRole === 'restaurant_owner'){
+
+  openRestaurantDashboard();
+
+ }else if(currentRole === 'driver'){
+
+  openDriverDashboard();
+
+ }else if(currentRole === 'admin'){
+
+  openAdminDashboard();
+
+ }else{
+
+  showHome();
+
+ }
+
+}
+
+
+/* =========================
+   HOME
+========================= */
+
+async function loadHomeData(){
+
+ const [restaurantsResult,foodsResult] =
+ await Promise.all([
+
+  db
+  .from('restaurants')
+  .select('*')
+  .order('id'),
+
+  db
+  .from('foods')
+  .select('*')
+  .eq('is_available',true)
+  .order('id')
+
+ ]);
+
+
+ if(restaurantsResult.error){
+
+  toast(restaurantsResult.error.message);
+
+  return;
+
+ }
+
+
+ if(foodsResult.error){
+
+  toast(foodsResult.error.message);
+
+  return;
+
+ }
+
+
+ restaurants =
+ restaurantsResult.data || [];
+
+ foods =
+ foodsResult.data || [];
+
+ renderHome();
+
+}
+
+
+window.loadHomeData = loadHomeData;
+
+
+window.renderHome = function(){
+
+ const query =
+ document.getElementById('searchInput')
+ .value
+ .trim()
+ .toLowerCase();
+
+
+ const restaurantGrid =
+ document.getElementById('restaurantsGrid');
+
+ const foodGrid =
+ document.getElementById('foodsGrid');
+
+
+ const filteredRestaurants =
+ restaurants.filter(r =>
+  !query ||
+  (r.name || '')
+  .toLowerCase()
+  .includes(query)
+ );
+
+
+ const filteredFoods =
+ foods.filter(f =>
+  !query ||
+  (f.name || '')
+  .toLowerCase()
+  .includes(query) ||
+  (f.category || '')
+  .toLowerCase()
+  .includes(query)
+ );
+
+
+ if(!filteredRestaurants.length){
+
+  restaurantGrid.innerHTML =
+   '<div class="empty">لا توجد مطاعم.</div>';
+
+ }else{
+
+  restaurantGrid.innerHTML =
+   filteredRestaurants.map(r => `
+
+   <div class="card">
+
+    <img
+     class="restaurant-img"
+     src="${escapeHtml(r.image_url || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80')}"
+    >
+
+    <div class="card-body">
+
+     <h3>${escapeHtml(r.name || '')}</h3>
+
+     <p>${escapeHtml(r.address || 'عين التمر')}</p>
+
+     <span class="badge ${r.is_open ? 'badge-open':'badge-closed'}">
+      ${r.is_open ? 'مفتوح':'مغلق'}
+     </span>
+
+     <br><br>
+
+     <button
+      class="btn btn-primary"
+      onclick="filterRestaurant(${r.id})">
+      عرض الوجبات
+     </button>
 
     </div>
 
-</div>
-return AppState.cart.reduce(
-        (total, item) =>
-            total +
-            Number(item.price || 0) *
-            Number(item.quantity || 0),
-        0
-    );
+   </div>
+
+  `).join('');
+
+ }
+
+
+ if(!filteredFoods.length){
+
+  foodGrid.innerHTML =
+   '<div class="empty">لا توجد وجبات.</div>';
+
+ }else{
+
+  foodGrid.innerHTML =
+   filteredFoods.map(f => `
+
+   <div class="card">
+
+    <img
+     class="food-img"
+     src="${escapeHtml(f.image_url || 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=80')}"
+    >
+
+    <div class="card-body">
+
+     <h3>${escapeHtml(f.name || '')}</h3>
+
+     <p>${escapeHtml(f.description || '')}</p>
+
+     <p>
+      <span class="price">
+       ${Number(f.price || 0).toLocaleString()}
+      </span>
+      د.ع
+     </p>
+
+     <p>
+      ${escapeHtml(f.category || '')}
+     </p>
+
+     <button
+      class="btn btn-primary"
+      onclick="addToCartById(${f.id})">
+      إضافة للسلة
+     </button>
+
+    </div>
+
+   </div>
+
+  `).join('');
+
+ }
+
+};
+
+
+window.filterRestaurant = function(id){
+
+ document.getElementById('searchInput').value = '';
+
+ const restaurantFoods =
+ foods.filter(f =>
+  Number(f.restaurant_id) === Number(id)
+ );
+
+ const foodGrid =
+ document.getElementById('foodsGrid');
+
+ foodGrid.innerHTML =
+ restaurantFoods.length
+ ? restaurantFoods.map(f => foodCard(f)).join('')
+ : '<div class="empty">لا توجد وجبات لهذا المطعم.</div>';
+
+ foodGrid.scrollIntoView({
+  behavior:'smooth'
+ });
+
+};
+
+
+function foodCard(f){
+
+ return `
+
+ <div class="card">
+
+  <img
+   class="food-img"
+   src="${escapeHtml(f.image_url || 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=80')}"
+  >
+
+  <div class="card-body">
+
+   <h3>${escapeHtml(f.name || '')}</h3>
+
+   <p>${escapeHtml(f.description || '')}</p>
+
+   <p class="price">
+    ${Number(f.price || 0).toLocaleString()} د.ع
+   </p>
+
+   <button
+    class="btn btn-primary"
+    onclick="addToCartById(${f.id})">
+    إضافة للسلة
+   </button>
+
+  </div>
+
+ </div>
+
+ `;
 
 }
 
 
-function updateHeader() {
+function escapeHtml(value){
 
-    const loggedIn =
-        !!AppState.user;
-
-
-    $("loginHeaderButton").style.display =
-        loggedIn
-            ? "none"
-            : "";
-
-
-    $("logoutHeaderButton").style.display =
-        loggedIn
-            ? ""
-            : "none";
-
-
-    updateCartCount();
+ return String(value ?? '')
+ .replaceAll('&','&amp;')
+ .replaceAll('<','&lt;')
+ .replaceAll('>','&gt;')
+ .replaceAll('"','&quot;')
+ .replaceAll("'","&#039;");
 
 }
 
 
-async function loadCurrentSession() {
+/* =========================
+   CART
+========================= */
 
-    const {
-        data,
-        error
-    } =
-        await supabaseClient.auth.getSession();
+window.addToCartById = function(foodId){
 
+ const food =
+ foods.find(f => Number(f.id) === Number(foodId));
 
-    if (error) {
-
-        console.error(error);
-
-        return;
-
-    }
+ if(!food)return;
 
 
-    AppState.session =
-        data.session || null;
+ if(cartRestaurantId &&
+    Number(cartRestaurantId) !== Number(food.restaurant_id)){
 
-    AppState.user =
-        data.session?.user || null;
+  if(!confirm(
+   'السلة تحتوي طلباً من مطعم آخر. هل تريد مسح السلة؟'
+  )) return;
 
+  cart = [];
 
-    if (!AppState.user) {
-
-        AppState.role = null;
-
-        updateHeader();
-
-        return;
-
-    }
+ }
 
 
-    await resolveUserRole();
-
-    updateHeader();
-
-}
+ cartRestaurantId =
+ food.restaurant_id;
 
 
-async function resolveUserRole() {
-
-    if (!AppState.user) {
-        return;
-    }
-
-
-    const metadataRole =
-        AppState.user.user_metadata?.role;
+ const existing =
+ cart.find(i =>
+  Number(i.food.id) === Number(food.id)
+ );
 
 
-    if (
-        metadataRole === "restaurant_owner" ||
-        metadataRole === "driver" ||
-        metadataRole === "admin"
-    ) {
+ if(existing){
 
-        AppState.role =
-            metadataRole;
+  existing.quantity++;
 
-    } else {
+ }else{
 
-        AppState.role =
-            "customer";
+  cart.push({
+   food,
+   quantity:1
+  });
 
-    }
+ }
 
 
-    /*
-      نحاول جلب الدور من profiles/RPC
-      إذا كان موجوداً في قاعدة البيانات.
-    */
+ updateCartCount();
 
-    try {
+ toast('تمت إضافة الوجبة للسلة');
 
-        const {
-            data,
-            error
-        } =
-            await supabaseClient
-                .rpc("get_my_role");
+};
 
 
-        if (
-            !error &&
-            data
-        ) {
+function updateCartCount(){
 
-            AppState.role =
-                data;
+ const count =
+ cart.reduce(
+  (sum,item)=>sum + item.quantity,
+  0
+ );
 
-        }
-
-    } catch (error) {
-
-        console.warn(
-            "Role RPC not available:",
-            error
-        );
-
-    }
+ document.getElementById('cartCount').textContent =
+  count;
 
 }
 
 
-async function initializeApp() {
+window.openCart = function(){
 
-    loadCart();
+ renderCart();
 
-    updateHeader();
+ openModal('cartModal');
 
-    await loadRestaurants();
-
-    await loadCurrentSession();
-
-}
+};
 
 
-document.addEventListener(
-    "DOMContentLoaded",
-    initializeApp
-);
+function renderCart(){
+
+ const box =
+ document.getElementById('cartItems');
+
+ const checkout =
+ document.getElementById('cartCheckout');
 
 
-window.addEventListener(
-    "storage",
-    event => {
+ if(!cart.length){
 
-        if (
-            event.key ===
-            "ain_altamr_cart"
-        ) {
+  box.innerHTML =
+   '<div class="empty">السلة فارغة.</div>';
 
-            loadCart();
+  checkout.classList.add('hidden');
 
-            renderCart();
+  return;
 
-        }
-
-    }
-);
+ }
 
 
-document.addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            event.key === "Escape"
-        ) {
-
-            closeAllModals();
-
-        }
-
-    }
-);
+ checkout.classList.remove('hidden');
 
 
-document
-    .querySelectorAll(".modal")
-    .forEach(modal => {
+ box.innerHTML =
+ cart.map((item,index)=>`
 
-        modal.addEventListener(
-            "click",
-            event => {
+ <div class="cart-item">
 
-                if (
-                    event.target === modal
-                ) {
+  <div>
+   <strong>${escapeHtml(item.food.name)}</strong>
+   <br>
+   ${Number(item.food.price).toLocaleString()} د.ع
+  </div>
 
-                    modal.classList.remove(
-                        "open"
-                    );
+  <div class="qty">
 
-                }
+   <button onclick="changeCartQty(${index},-1)">−</button>
 
-            }
-        );
+   <strong>${item.quantity}</strong>
 
-    });
-            </script>
-                AppState.user =
-        null;
+   <button onclick="changeCartQty(${index},1)">+</button>
 
-    AppState.session =
-        null;
+   <button
+    class="btn btn-danger"
+    onclick="removeCartItem(${index})">
+    حذف
+   </button>
 
-    AppState.role =
-        null;
+  </div>
 
-    AppState.restaurant =
-        null;
+ </div>
 
-    AppState.driver =
-        null;
+ `).join('');
 
 
-    updateHeader();
+ const total =
+ cart.reduce(
+  (sum,item)=>
+   sum +
+   Number(item.food.price || 0) *
+   item.quantity,
+  0
+ );
 
-    showPage(
-        "home"
-    );
 
-    showToast(
-        "تم تسجيل الخروج."
-    );
+ document.getElementById('cartTotal').textContent =
+  total.toLocaleString();
+
+
+ if(currentUser){
+
+  document.getElementById('orderName').value =
+   currentUser.user_metadata?.full_name || '';
+
+  document.getElementById('orderPhone').value =
+   currentUser.user_metadata?.phone || '';
+
+ }
 
 }
 
 
-supabaseClient
-    .auth
-    .onAuthStateChange(
-        async (
-            event,
-            session
-        ) => {
+window.changeCartQty = function(index,change){
 
-            AppState.session =
-                session;
+ cart[index].quantity += change;
 
-            AppState.user =
-                session?.user ||
-                null;
+ if(cart[index].quantity <= 0){
+
+  cart.splice(index,1);
+
+ }
 
 
-            if (
-                !AppState.user
-            ) {
+ if(!cart.length){
 
-                AppState.role =
-                    null;
+  cartRestaurantId = null;
 
-                updateHeader();
-
-                return;
-
-            }
+ }
 
 
-            await resolveUserRole();
+ updateCartCount();
 
-            updateHeader();
+ renderCart();
 
-        }
-    );
+};
+
+
+window.removeCartItem = function(index){
+
+ cart.splice(index,1);
+
+ if(!cart.length){
+
+  cartRestaurantId = null;
+
+ }
+
+ updateCartCount();
+
+ renderCart();
+
+};
+
+
+/* =========================
+   CREATE ORDER
+========================= */
+
+window.createOrder = async function(){
+
+ if(!currentUser){
+
+  closeModal('cartModal');
+
+  openAuth();
+
+  toast('سجّل الدخول أولاً لإرسال الطلب');
+
+  return;
+
+ }
+
+
+ if(!cart.length){
+
+  toast('السلة فارغة');
+
+  return;
+
+ }
+
+
+ const name =
+ document.getElementById('orderName')
+ .value.trim();
+
+ const phone =
+ document.getElementById('orderPhone')
+ .value.trim();
+
+ const address =
+ document.getElementById('orderAddress')
+ .value.trim();
+
+
+ if(!name || !phone || !address){
+
+  toast('املأ بيانات التوصيل');
+
+  return;
+
+ }
+
+
+ const items =
+ cart.map(item=>({
+
+  food_id:Number(item.food.id),
+
+  quantity:Number(item.quantity)
+
+ }));
+
+
+ const {data,error} =
+ await db.rpc(
+  'create_food_order',
+  {
+   p_restaurant_id:
+    Number(cartRestaurantId),
+
+   p_customer_name:name,
+
+   p_customer_phone:phone,
+
+   p_customer_address:address,
+
+   p_items:items
+  }
+ );
+
+
+ if(error){
+
+  toast(error.message);
+
+  return;
+
+ }
+
+
+ cart = [];
+
+ cartRestaurantId = null;
+
+ updateCartCount();
+
+ closeModal('cartModal');
+
+ toast(
+  `تم إرسال الطلب رقم ${data.order_number || data.id}`
+ );
+
+ openMyOrders();
+
+};
+
+
+/* =========================
+   CUSTOMER ORDERS
+========================= */
+
+window.openMyOrders = async function(){
+
+ if(!currentUser){
+
+  openAuth();
+
+  return;
+
+ }
+
+
+ showDashboard();
+
+ document.getElementById('dashboardTitle').textContent =
+  'طلباتي';
+
+ const box =
+ document.getElementById('dashboardContent');
+
+ box.innerHTML =
+  '<div class="panel">جاري تحميل الطلبات...</div>';
+
+
+ const {data,error} =
+ await db
+ .from('orders')
+ .select(`
+  *,
+  restaurants(name)
+ `)
+ .eq('customer_id',currentUser.id)
+ .order('created_at',{ascending:false});
+
+
+ if(error){
+
+  box.innerHTML =
+   `<div class="panel">${escapeHtml(error.message)}</div>`;
+
+  return;
+
+ }
+
+
+ if(!data.length){
+
+  box.innerHTML =
+   '<div class="panel empty">لا توجد طلبات حتى الآن.</div>';
+
+  return;
+
+ }
+
+
+ box.innerHTML = `
+
+ <div class="panel">
+
+  <h3>طلباتك</h3>
+
+  ${data.map(o=>`
+
+   <div class="order-card">
+
+    <div class="order-head">
+
+     <strong>
+      طلب #${o.id}
+     </strong>
+
+     <span class="status status-${o.status}">
+      ${statusArabic(o.status)}
+     </span>
+
+    </div>
+
+    <p>
+     المطعم:
+     ${escapeHtml(o.restaurants?.name || '')}
+    </p>
+
+    <p>
+     المجموع:
+     <strong>
+      ${Number(o.total || 0).toLocaleString()} د.ع
+     </strong>
+    </p>
+
+    <p>
+     ${new Date(o.created_at).toLocaleString('ar-IQ')}
+    </p>
+
+    <button
+     class="btn btn-light"
+     onclick="showOrderDetails(${o.id})">
+     تفاصيل الطلب
+    </button>
+
+   </div>
+
+  `).join('')}
+
+ </div>
+
+ `;
+
+};
+
+
+window.showOrderDetails = async function(orderId){
+
+ const {data:order,error} =
+ await db
+ .from('orders')
+ .select(`
+  *,
+  restaurants(name)
+ `)
+ .eq('id',orderId)
+ .single();
+
+
+ if(error){
+
+  toast(error.message);
+
+  return;
+
+ }
+
+
+ const {data:items,error:itemError} =
+ await db
+ .from('order_items')
+ .select(`
+  *,
+  foods(name)
+ `)
+ .eq('order_id',orderId);
+
+
+ if(itemError){
+
+  toast(itemError.message);
+
+  return;
+
+ }
+
+
+ const html = `
+
+ <div class="panel">
+
+  <h2>تفاصيل الطلب #${order.id}</h2>
+
+  <p>
+   المطعم:
+   ${escapeHtml(order.restaurants?.name || '')}
+  </p>
+
+  <p>
+   الحالة:
+   <span class="status status-${order.status}">
+    ${statusArabic(order.status)}
+   </span>
+  </p>
+
+  <hr>
+
+  ${items.map(i=>`
+
+   <div class="cart-item">
+
+    <span>
+     ${escapeHtml(i.foods?.name || '')}
+     × ${i.quantity}
+    </span>
+
+    <strong>
+     ${(Number(i.price)*Number(i.quantity))
+      .toLocaleString()} د.ع
+    </strong>
+
+   </div>
+
+  `).join('')}
+
+  <h3>
+   المجموع:
+   ${Number(order.total || 0).toLocaleString()} د.ع
+  </h3>
+
+  <p>
+   العنوان:
+   ${escapeHtml(order.customer_address)}
+  </p>
+
+ </div>
+
+ `;
+
+
+ document.getElementById('dashboardContent').innerHTML =
+  html;
+
+};
+
+
+/* =========================
+   RESTAURANT
+========================= */
+
+async function getMyRestaurant(){
+
+ if(!currentUser)return null;
+
+
+ const {data,error} =
+ await db
+ .from('restaurants')
+ .select('*')
+ .eq('owner_id',currentUser.id)
+ .single();
+
+
+ if(error){
+
+  console.error(error);
+
+  return null;
+
+ }
+
+
+ return data;
+
+}
+
+
+window.openRestaurantDashboard =
+ async function(){
+
+  if(!currentUser){
+
+   openAuth();
+
+   return;
+
+  }
+
+
+  restaurantData =
+   await getMyRestaurant();
+
+
+  if(!restaurantData){
+
+   toast('لم يتم العثور على المطعم');
+
+   return;
+
+  }
+
+
+  showDashboard();
+
+  document.getElementById('dashboardTitle').textContent =
+   'لوحة المطعم';
+
+  renderRestaurantDashboard();
+
+ };
+
+
+async function renderRestaurantDashboard(){
+
+ const box =
+ document.getElementById('dashboardContent');
+
+
+ box.innerHTML = `
+
+ <div class="tabs">
+
+  <button class="tab active"
+   onclick="restaurantTab('orders',this)">
+   الطلبات
+  </button>
+
+  <button class="tab"
+   onclick="restaurantTab('foods',this)">
+   الوجبات
+  </button>
+
+  <button class="tab"
+   onclick="restaurantTab('settings',this)">
+   الإعدادات
+  </button>
+
+ </div>
+
+ <div id="restaurantPanel"></div>
+
+ `;
+
+
+ await restaurantTab('orders');
+
+}
+
+
+window.restaurantTab = async function(tab,button){
+
+ if(button){
+
+  document
+   .querySelectorAll('.tabs .tab')
+   .forEach(x=>x.classList.remove('active'));
+
+  button.classList.add('active');
+
+ }
+
+
+ if(tab === 'orders'){
+
+  await loadRestaurantOrders();
+
+ }
+
+ if(tab === 'foods'){
+
+  await loadRestaurantFoods();
+
+ }
+
+ if(tab === 'settings'){
+
+  renderRestaurantSettings();
+
+ }
+
+};
+
+
+async function loadRestaurantOrders(){
+
+ const box =
+ document.getElementById('restaurantPanel');
+
+
+ const {data,error} =
+ await db
+ .from('orders')
+ .select('*')
+ .eq('restaurant_id',restaurantData.id)
+ .order('created_at',{ascending:false});
+
+
+ if(error){
+
+  box.innerHTML =
+   `<div class="panel">${escapeHtml(error.message)}</div>`;
+
+  return;
+
+ }
+
+
+ if(!data.length){
+
+  box.innerHTML =
+   '<div class="panel empty">لا توجد طلبات.</div>';
+
+  return;
+
+ }
+
+
+ box.innerHTML = `
+
+ <div class="panel">
+
+  <h3>طلبات المطعم</h3>
+
+  ${data.map(o=>`
+
+   <div class="order-card">
+
+    <div class="order-head">
+
+     <strong>طلب #${o.id}</strong>
+
+     <span class="status status-${o.status}">
+      ${statusArabic(o.status)}
+     </span>
+
+    </div>
+
+    <p>
+     الزبون:
+     ${escapeHtml(o.customer_name)}
+    </p>
+
+    <p>
+     الهاتف:
+     ${escapeHtml(o.customer_phone)}
+    </p>
+
+    <p>
+     العنوان:
+     ${escapeHtml(o.customer_address)}
+    </p>
+
+    <p>
+     المجموع:
+     <strong>
+      ${Number(o.total || 0).toLocaleString()} د.ع
+     </strong>
+    </p>
+
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+
+     ${restaurantStatusButtons(o)}
+
+    </div>
+
+   </div>
+
+  `).join('')}
+
+ </div>
+
+ `;
+
+}
+
+
+function restaurantStatusButtons(order){
+
+ if(order.status === 'new'){
+
+  return `
+   <button
+    class="btn btn-success"
+    onclick="updateRestaurantOrder(${order.id},'accepted')">
+    قبول الطلب
+   </button>
+
+   <button
+    class="btn btn-danger"
+    onclick="updateRestaurantOrder(${order.id},'rejected')">
+    رفض
+   </button>
+  `;
+
+ }
+
+
+ if(order.status === 'accepted'){
+
+  return `
+   <button
+    class="btn btn-warning"
+    onclick="updateRestaurantOrder(${order.id},'preparing')">
+    بدء التحضير
+   </button>
+  `;
+
+ }
+
+
+ if(order.status === 'preparing'){
+
+  return `
+   <button
+    class="btn btn-success"
+    onclick="updateRestaurantOrder(${order.id},'ready')">
+    جاهز للاستلام
+   </button>
+  `;
+
+ }
+
+
+ return '';
+
+}
+
+
+window.updateRestaurantOrder =
+ async function(orderId,status){
+
+  const {error} =
+   await db.rpc(
+    'restaurant_update_order_status',
+    {
+     p_order_id:Number(orderId),
+     p_status:status
+    }
+   );
+
+
+  if(error){
+
+   toast(error.message);
+
+   return;
+
+  }
+
+
+  toast('تم تحديث حالة الطلب');
+
+  await loadRestaurantOrders();
+
+ };
+
+
+async function loadRestaurantFoods(){
+
+ const box =
+ document.getElementById('restaurantPanel');
+
+
+ const {data,error} =
+ await db
+ .from('foods')
+ .select('*')
+ .eq('restaurant_id',restaurantData.id)
+ .order('id');
+
+
+ if(error){
+
+  box.innerHTML =
+   `<div class="panel">${escapeHtml(error.message)}</div>`;
+
+  return;
+
+ }
+
+
+ box.innerHTML = `
+
+ <div class="panel">
+
+  <div class="section-title">
+
+   <h3>إدارة الوجبات</h3>
+
+   <button
+    class="btn btn-primary"
+    onclick="openFoodEditor()">
+    + إضافة وجبة
+   </button>
+
+  </div>
+
+  <div class="grid">
+
+   ${data.map(f=>`
+
+    <div class="card">
+
+     <img
+      class="food-img"
+      src="${escapeHtml(f.image_url || '')}"
+     >
+
+     <div class="card-body">
+
+      <h3>${escapeHtml(f.name)}</h3>
+
+      <p>
+       ${Number(f.price).toLocaleString()} د.ع
+      </p>
+
+      <span class="badge ${
+       f.is_available
+       ? 'badge-open'
+       : 'badge-closed'
+      }">
+       ${f.is_available?'متاحة':'غير متاحة'}
+      </span>
+
+      <br><br>
+
+      <button
+       class="btn btn-light"
+       onclick="openFoodEditor(${f.id})">
+       تعديل
+      </button>
+
+      <button
+       class="btn btn-danger"
+       onclick="deleteFood(${f.id})">
+       حذف
+      </button>
+
+     </div>
+
+    </div>
+
+   `).join('')}
+
+  </div>
+
+ </div>
+
+ `;
+
+}
+
+
+window.openFoodEditor =
+ async function(foodId=null){
+
+  document.getElementById('foodId').value =
+   foodId || '';
+
+  if(!foodId){
+
+   document.getElementById('foodModalTitle').textContent =
+    'إضافة وجبة';
+
+   document.getElementById('foodName').value='';
+   document.getElementById('foodPrice').value='';
+   document.getElementById('foodCategory').value='';
+   document.getElementById('foodDescription').value='';
+   document.getElementById('foodImage').value='';
+
+   openModal('foodModal');
+
+   return;
+
+  }
+
+
+  const {data,error} =
+   await db
+   .from('foods')
+   .select('*')
+   .eq('id',foodId)
+   .single();
+
+
+  if(error){
+
+   toast(error.message);
+
+   return;
+
+  }
+
+
+  document.getElementById('foodModalTitle').textContent =
+   'تعديل وجبة';
+
+  document.getElementById('foodName').value =
+   data.name || '';
+
+  document.getElementById('foodPrice').value =
+   data.price || '';
+
+  document.getElementById('foodCategory').value =
+   data.category || '';
+
+  document.getElementById('foodDescription').value =
+   data.description || '';
+
+  document.getElementById('foodImage').value =
+   data.image_url || '';
+
+  openModal('foodModal');
+
+ };
+
+
+window.saveFood = async function(){
+
+ const id =
+ document.getElementById('foodId').value;
+
+ const payload = {
+
+  name:
+   document.getElementById('foodName').value.trim(),
+
+  price:
+   Number(document.getElementById('foodPrice').value),
+
+  category:
+   document.getElementById('foodCategory').value.trim(),
+
+  description:
+   document.getElementById('foodDescription').value.trim(),
+
+  image_url:
+   document.getElementById('foodImage').value.trim(),
+
+  restaurant_id:
+   restaurantData.id,
+
+  is_available:true
+
+ };
+
+
+ if(!payload.name || !payload.price){
+
+  toast('اسم الوجبة والسعر مطلوبان');
+
+  return;
+
+ }
+
+
+ let result;
+
+
+ if(id){
+
+  result =
+   await db
+   .from('foods')
+   .update(payload)
+   .eq('id',id);
+
+ }else{
+
+  result =
+   await db
+   .from('foods')
+   .insert(payload);
+
+ }
+
+
+ if(result.error){
+
+  toast(result.error.message);
+
+  return;
+
+ }
+
+
+ closeModal('foodModal');
+
+ toast('تم حفظ الوجبة');
+
+ loadRestaurantFoods();
+
+ loadHomeData();
+
+};
+
+
+window.deleteFood = async function(id){
+
+ if(!confirm('هل تريد حذف هذه الوجبة؟'))return;
+
+
+ const {error} =
+ await db
+ .from('foods')
+ .delete()
+ .eq('id',id);
+
+
+ if(error){
+
+  toast(error.message);
+
+  return;
+
+ }
+
+
+ toast('تم حذف الوجبة');
+
+ loadRestaurantFoods();
+
+ loadHomeData();
+
+};
+
+
+function renderRestaurantSettings(){
+
+ const box =
+ document.getElementById('restaurantPanel');
+
+
+ box.innerHTML = `
+
+ <div class="panel">
+
+  <h3>إعدادات المطعم</h3>
+
+  <div class="form-group">
+
+   <label>اسم المطعم</label>
+
+   <input
+    id="restaurantNameSetting"
+    class="form-control"
+    value="${escapeHtml(restaurantData.name || '')}"
+   >
+
+  </div>
+
+  <div class="form-group">
+
+   <label>رقم الهاتف</label>
+
+   <input
+    id="restaurantPhoneSetting"
+    class="form-control"
+    value="${escapeHtml(restaurantData.phone || '')}"
+   >
+
+  </div>
+
+  <div class="form-group">
+
+   <label>العنوان</label>
+
+   <input
+    id="restaurantAddressSetting"
+    class="form-control"
+    value="${escapeHtml(restaurantData.address || '')}"
+   >
+
+  </div>
+
+  <div class="form-group">
+
+   <label>رابط صورة المطعم</label>
+
+   <input
+    id="restaurantImageSetting"
+    class="form-control"
+    value="${escapeHtml(restaurantData.image_url || '')}"
+   >
+
+  </div>
+
+  <label>
+   <input
+    type="checkbox"
+    id="restaurantOpenSetting"
+    ${restaurantData.is_open ? 'checked':''}
+   >
+   المطعم مفتوح
+  </label>
+
+  <br><br>
+
+  <button
+   class="btn btn-primary"
+   onclick="saveRestaurantSettings()">
+   حفظ
+  </button>
+
+  <button
+   class="btn btn-danger"
+   onclick="logout()">
+   تسجيل الخروج
+  </button>
+
+ </div>
+
+ `;
+
+}
+
+
+window.saveRestaurantSettings =
+ async function(){
+
+  const payload = {
+
+   name:
+    document.getElementById('restaurantNameSetting')
+    .value.trim(),
+
+   phone:
+    document.getElementById('restaurantPhoneSetting')
+    .value.trim(),
+
+   address:
+    document.getElementById('restaurantAddressSetting')
+    .value.trim(),
+
+   image_url:
+    document.getElementById('restaurantImageSetting')
+    .value.trim(),
+
+   is_open:
+    document.getElementById('restaurantOpenSetting')
+    .checked
+
+  };
+
+
+  const {data,error} =
+   await db
+   .from('restaurants')
+   .update(payload)
+   .eq('id',restaurantData.id)
+   .select()
+   .single();
+
+
+  if(error){
+
+   toast(error.message);
+
+   return;
+
+  }
+
+
+  restaurantData = data;
+
+  toast('تم حفظ إعدادات المطعم');
+
+  loadHomeData();
+
+ };
+
+
+/* =========================
+   DRIVER
+========================= */
+
+window.openDriverDashboard =
+ async function(){
+
+  if(!currentUser){
+
+   openAuth();
+
+   return;
+
+  }
+
+
+  const {data,error} =
+   await db
+   .from('drivers')
+   .select('*')
+   .eq('id',currentUser.id)
+   .single();
+
+
+  if(error){
+
+   toast('لم يتم العثور على ملف السائق');
+
+   return;
+
+  }
+
+
+  driverData = data;
+
+  showDashboard();
+
+  document.getElementById('dashboardTitle').textContent =
+   'لوحة السائق';
+
+  renderDriverDashboard();
+
+ };
+
+
+async function renderDriverDashboard(){
+
+ const box =
+ document.getElementById('dashboardContent');
+
+
+ box.innerHTML = `
+
+ <div class="stat-grid">
+
+  <div class="stat">
+
+   <div>الحالة</div>
+
+   <div class="stat-number">
+    ${driverData.is_available?'متاح':'غير متاح'}
+   </div>
+
+  </div>
+
+ </div>
+
+ <div class="panel">
+
+  <h3>حالة السائق</h3>
+
+  <button
+   class="btn ${
+    driverData.is_available
+     ? 'btn-danger'
+     : 'btn-success'
+   }"
+   onclick="toggleDriverAvailability()">
+
+   ${
+    driverData.is_available
+     ? 'إيقاف التوفر'
+     : 'أنا متاح للعمل'
+   }
+
+  </button>
+
+ </div>
+
+ <div class="panel">
+
+  <h3>موقعي</h3>
+
+  <div id="map"></div>
+
+  <br>
+
+  <button
+   class="btn btn-primary"
+   onclick="updateDriverLocation()">
+   تحديث موقعي
+  </button>
+
+ </div>
+
+ <div class="panel">
+
+  <h3>الطلبات المسندة إليّ</h3>
+
+  <div id="driverAssignments">
+   جاري التحميل...
+  </div>
+
+ </div>
+
+ <div class="panel">
+
+  <button
+   class="btn btn-danger"
+   onclick="logout()">
+   تسجيل الخروج
+  </button>
+
+ </div>
+
+ `;
+
+
+ setTimeout(()=>{
+
+  initDriverMap();
+
+ },100);
+
+
+ await loadDriverAssignments();
+
+}
+
+
+window.toggleDriverAvailability =
+ async function(){
+
+  const newStatus =
+   !driverData.is_available;
+
+
+  const {error} =
+   await db.rpc(
+    'driver_set_status',
+    {
+     p_is_available:newStatus
+    }
+   );
+
+
+  if(error){
+
+   toast(error.message);
+
+   return;
+
+  }
+
+
+  driverData.is_available =
+   newStatus;
+
+  renderDriverDashboard();
+
+ };
+
+
+function initDriverMap(){
+
+ const lat =
+  Number(driverData.current_lat)
+  || 32.616;
+
+ const lng =
+  Number(driverData.current_lng)
+  || 43.672;
+
+
+ if(map){
+
+  map.remove();
+
+ }
+
+
+ map =
+ L.map('map').setView(
+  [lat,lng],
+  13
+ );
+
+
+ L.tileLayer(
+  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  {
+   attribution:'© OpenStreetMap'
+  }
+ ).addTo(map);
+
+
+ driverMarker =
+ L.marker([lat,lng])
+ .addTo(map)
+ .bindPopup('موقعي الحالي');
+
+
+}
+
+
+window.updateDriverLocation =
+ function(){
+
+  if(!navigator.geolocation){
+
+   toast('المتصفح لا يدعم تحديد الموقع');
+
+   return;
+
+  }
+
+
+  navigator.geolocation.getCurrentPosition(
+   async position=>{
+
+    const lat =
+     position.coords.latitude;
+
+    const lng =
+     position.coords.longitude;
+
+
+    const {error} =
+     await db.rpc(
+      'driver_update_location',
+      {
+       p_lat:lat,
+       p_lng:lng
+      }
+     );
+
+
+    if(error){
+
+     toast(error.message);
+
+     return;
+
+    }
+
+
+    driverData.current_lat = lat;
+    driverData.current_lng = lng;
+
+
+    if(map){
+
+     map.setView([lat,lng],15);
+
+     if(driverMarker){
+
+      driverMarker.setLatLng([lat,lng]);
+
+     }else{
+
+      driverMarker =
+       L.marker([lat,lng])
+       .addTo(map);
+
+     }
+
+    }
+
+
+    toast('تم تحديث الموقع');
+
+   },
+   ()=>{
+    toast('تعذر الحصول على الموقع');
+
+   },
+   {
+    enableHighAccuracy:true,
+    timeout:10000
+   }
+  );
+
+ };
+
+
+async function loadDriverAssignments(){
+
+ const box =
+ document.getElementById('driverAssignments');
+
+
+ const {data,error} =
+ await db
+ .from('order_assignments')
+ .select(`
+  *,
+  orders(*,restaurants(name))
+ `)
+ .eq('driver_id',currentUser.id)
+ .order('created_at',{ascending:false});
+
+
+ if(error){
+
+  box.innerHTML =
+   escapeHtml(error.message);
+
+  return;
+
+ }
+
+
+ if(!data.length){
+
+  box.innerHTML =
+   '<div class="empty">لا توجد طلبات مسندة.</div>';
+
+  return;
+
+ }
+
+
+ box.innerHTML =
+ data.map(a=>`
+
+ <div class="order-card">
+
+  <div class="order-head">
+
+   <strong>
+    طلب #${a.order_id}
+   </strong>
+
+   <span class="status status-${a.status}">
+    ${statusArabic(a.status)}
+   </span>
+
+  </div>
+
+  <p>
+   المطعم:
+   ${escapeHtml(a.orders?.restaurants?.name || '')}
+  </p>
+
+  <p>
+   الزبون:
+   ${escapeHtml(a.orders?.customer_name || '')}
+  </p>
+
+  <p>
+   الهاتف:
+   ${escapeHtml(a.orders?.customer_phone || '')}
+  </p>
+
+  <p>
+   العنوان:
+   ${escapeHtml(a.orders?.customer_address || '')}
+  </p>
+
+  ${driverAssignmentButtons(a)}
+
+ </div>
+
+ `).join('');
+
+}
+
+
+function driverAssignmentButtons(a){
+
+ if(a.status === 'assigned'){
+
+  return `
+   <button
+    class="btn btn-primary"
+    onclick="updateAssignment(${a.order_id},'accepted')">
+    قبول الطلب
+   </button>
+
+   <button
+    class="btn btn-danger"
+    onclick="updateAssignment(${a.order_id},'cancelled')">
+    إلغاء
+   </button>
+  `;
+
+ }
+
+
+ if(a.status === 'accepted'){
+
+  return `
+   <button
+    class="btn btn-warning"
+    onclick="updateAssignment(${a.order_id},'picked_up')">
+    استلام الطلب
+   </button>
+  `;
+
+ }
+
+
+ if(a.status === 'picked_up'){
+
+  return `
+   <button
+    class="btn btn-success"
+    onclick="updateAssignment(${a.order_id},'delivered')">
+    تم التوصيل
+   </button>
+  `;
+
+ }
+
+
+ return '';
+
+}
+
+
+window.updateAssignment =
+ async function(orderId,status){
+
+  const {error} =
+   await db.rpc(
+    'driver_update_assignment_status',
+    {
+     p_order_id:Number(orderId),
+     p_status:status
+    }
+   );
+
+
+  if(error){
+
+   toast(error.message);
+
+   return;
+
+  }
+
+
+  toast('تم تحديث حالة التوصيل');
+
+  await loadDriverAssignments();
+
+ };
+
+
+/* =========================
+   ADMIN
+========================= */
+
+window.openAdminDashboard =
+ async function(){
+
+  if(!currentUser){
+
+   openAuth();
+
+   return;
+
+  }
+
+
+  showDashboard();
+
+  document.getElementById('dashboardTitle').textContent =
+   'لوحة الإدارة';
+
+  await renderAdminDashboard();
+
+ };
+
+
+async function renderAdminDashboard(){
+
+ const box =
+ document.getElementById('dashboardContent');
+
+
+ box.innerHTML =
+  '<div class="panel">جاري تحميل لوحة الإدارة...</div>';
+
+
+ const [
+  restaurantsResult,
+  driversResult,
+  ordersResult
+ ] = await Promise.all([
+
+  db.from('restaurants').select('*').order('id'),
+
+  db.from('drivers').select('*').order('created_at',{ascending:false}),
+
+  db.from('orders').select(`
+   *,
+   restaurants(name)
+  `).order('created_at',{ascending:false})
+
+ ]);
+
+
+ if(
+  restaurantsResult.error ||
+  driversResult.error ||
+  ordersResult.error
+ ){
+
+  box.innerHTML = `
+
+   <div class="panel">
+
+    <h3>خطأ في تحميل البيانات</h3>
+
+    <p>
+     ${escapeHtml(
+      restaurantsResult.error?.message ||
+      driversResult.error?.message ||
+      ordersResult.error?.message ||
+      'خطأ غير معروف'
+     )}
+    </p>
+
+   </div>
+
+  `;
+
+  return;
+
+ }
+
+
+ const restaurants =
+  restaurantsResult.data || [];
+
+ const drivers =
+  driversResult.data || [];
+
+ const orders =
+  ordersResult.data || [];
+
+
+ box.innerHTML = `
+
+ <div class="stat-grid">
+
+  <div class="stat">
+
+   <div>المطاعم</div>
+
+   <div class="stat-number">
+    ${restaurants.length}
+   </div>
+
+  </div>
+
+  <div class="stat">
+
+   <div>السائقون</div>
+
+   <div class="stat-number">
+    ${drivers.length}
+   </div>
+
+  </div>
+
+  <div class="stat">
+
+   <div>الطلبات</div>
+
+   <div class="stat-number">
+    ${orders.length}
+   </div>
+
+  </div>
+
+ </div>
+
+
+ <div class="panel">
+
+  <h3>المطاعم</h3>
+
+  <div class="table-wrap">
+
+   <table>
+
+    <thead>
+
+     <tr>
+      <th>ID</th>
+      <th>المطعم</th>
+      <th>الهاتف</th>
+      <th>الحالة</th>
+     </tr>
+
+    </thead>
+
+    <tbody>
+
+     ${restaurants.map(r=>`
+
+      <tr>
+
+       <td>${r.id}</td>
+
+       <td>${escapeHtml(r.name)}</td>
+
+       <td>${escapeHtml(r.phone || '')}</td>
+
+       <td>
+        ${r.is_open?'مفتوح':'مغلق'}
+       </td>
+
+      </tr>
+
+     `).join('')}
+
+    </tbody>
+
+   </table>
+
+  </div>
+
+ </div>
+
+
+ <div class="panel">
+
+  <h3>السائقون</h3>
+
+  <div class="table-wrap">
+
+   <table>
+
+    <thead>
+
+     <tr>
+      <th>الاسم</th>
+      <th>الهاتف</th>
+      <th>متاح</th>
+      <th>الموقع</th>
+     </tr>
+
+    </thead>
+
+    <tbody>
+
+     ${drivers.map(d=>`
+
+      <tr>
+
+       <td>${escapeHtml(d.full_name || '')}</td>
+
+       <td>${escapeHtml(d.phone || '')}</td>
+
+       <td>
+        ${d.is_available?'نعم':'لا'}
+       </td>
+
+       <td>
+        ${d.current_lat || '-'},
+        ${d.current_lng || '-'}
+       </td>
+
+      </tr>
+
+     `).join('')}
+
+    </tbody>
+
+   </table>
+
+  </div>
+
+ </div>
+
+
+ <div class="panel">
+
+  <h3>آخر الطلبات</h3>
+
+  ${orders.slice(0,30).map(o=>`
+
+   <div class="order-card">
+
+    <div class="order-head">
+
+     <strong>طلب #${o.id}</strong>
+
+     <span class="status status-${o.status}">
+      ${statusArabic(o.status)}
+     </span>
+
+    </div>
+
+    <p>
+     المطعم:
+     ${escapeHtml(o.restaurants?.name || '')}
+    </p>
+
+    <p>
+     الزبون:
+     ${escapeHtml(o.customer_name || '')}
+    </p>
+
+    <p>
+     ${Number(o.total || 0).toLocaleString()} د.ع
+    </p>
+
+   </div>
+
+  `).join('')}
+
+ </div>
+
+
+ <div class="panel">
+
+  <button
+   class="btn btn-danger"
+   onclick="logout()">
+   تسجيل الخروج
+  </button>
+
+ </div>
+
+ `;
+
+}
+
+
+/* =========================
+   REALTIME
+========================= */
+
+function subscribeRealtime(){
+
+ db.channel('orders-live')
+ .on(
+  'postgres_changes',
+  {
+   event:'*',
+   schema:'public',
+   table:'orders'
+  },
+  payload=>{
+
+   if(currentRole === 'restaurant_owner'){
+
+    if(
+     restaurantData &&
+     Number(payload.new?.restaurant_id)
+      === Number(restaurantData.id)
+    ){
+
+     loadRestaurantOrders();
+
+    }
+
+   }
+
+
+   if(currentRole === 'customer'){
+
+    if(
+     payload.new?.customer_id ===
+     currentUser?.id
+    ){
+
+     toast(
+      `تم تحديث حالة الطلب #${payload.new.id}`
+     );
+
+    }
+
+   }
+
+  }
+ )
+ .subscribe();
+
+
+ db.channel('assignments-live')
+ .on(
+  'postgres_changes',
+  {
+   event:'*',
+   schema:'public',
+   table:'order_assignments'
+  },
+  payload=>{
+
+   if(
+    currentRole === 'driver' &&
+    payload.new?.driver_id === currentUser?.id
+   ){
+
+    loadDriverAssignments();
+
+    toast('تم تحديث طلباتك');
+
+   }
+
+  }
+ )
+ .subscribe();
+
+}
+
+
+/* =========================
+   STATUS
+========================= */
+
+function statusArabic(status){
+
+ const map = {
+
+  new:'جديد',
+
+  accepted:'تم القبول',
+
+  preparing:'قيد التحضير',
+
+  ready:'جاهز',
+
+  completed:'مكتمل',
+
+  rejected:'مرفوض',
+
+  assigned:'تم التعيين',
+
+  picked_up:'تم الاستلام',
+
+  delivered:'تم التوصيل',
+
+  cancelled:'ملغى'
+
+ };
+
+ return map[status] || status;
+
+}
+
+
+/* =========================
+   SESSION
+========================= */
+
+async function initialize(){
+
+ const {data} =
+  await db.auth.getSession();
+
+
+ currentUser =
+  data.session?.user || null;
+
+
+ if(currentUser){
+
+  await loadCurrentRole();
+
+ }
+
+
+ updateAuthButton();
+
+ loadHomeData();
+
+ subscribeRealtime();
+
+
+ db.auth.onAuthStateChange(
+  async(event,session)=>{
+
+   currentUser =
+    session?.user || null;
+
+
+   if(currentUser){
+
+    await loadCurrentRole();
+
+   }else{
+
+    currentRole='customer';
+
+   }
+
+
+   updateAuthButton();
+
+  }
+ );
+
+}
+
+
+initialize();
+
 </script>
-         showMessage(
-            "checkoutMessage",
-            "أكمل معلومات التوصيل.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    const restaurantId =
-        Number(
-            AppState.cart[0]
-                .restaurant_id
-        );
-
-
-    const items =
-        AppState.cart.map(
-            item => ({
-
-                food_id:
-                    Number(
-                        item.food_id
-                    ),
-
-                quantity:
-                    Number(
-                        item.quantity
-                    )
-
-            })
-        );
-
-
-    const button =
-        $("submitOrderButton");
-
-
-    button.disabled = true;
-
-
-    try {
-
-        /*
-          إنشاء الطلب يتم من خلال RPC
-          حتى لا يستطيع العميل تغيير
-          الأسعار من JavaScript.
-        */
-
-        const {
-            data,
-            error
-        } =
-            await supabaseClient
-                .rpc(
-                    "create_food_order",
-                    {
-                        p_restaurant_id:
-                            restaurantId,
-
-                        p_customer_name:
-                            name,
-
-                        p_customer_phone:
-                            phone,
-
-                        p_customer_address:
-                            address,
-
-                        p_items:
-                            items
-                    }
-                );
-
-
-        if (error) {
-
-            showMessage(
-                "checkoutMessage",
-                error.message,
-                "error"
-            );
-
-            return;
-
-        }
-
-
-        AppState.cart =
-            [];
-
-        saveCart();
-
-
-        closeModal(
-            "checkoutModal"
-        );
-
-
-        showToast(
-            تم إرسال الطلب رقم #${data.id} للمطعم بنجاح.
-        );
-
-    } finally {
-
-        button.disabled = false;
-
-    }
-
-}
-            </script>
-                const {
-        data,
-        error
-    } =
-        await supabaseClient
-            .rpc(
-                "restaurant_update_order_status",
-                {
-                    p_order_id:
-                        Number(orderId),
-
-                    p_status:
-                        status
-                }
-            );
-
-
-    if (error) {
-
-        showToast(
-            error.message,
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    await loadRestaurantOrders();
-
-
-    showToast(
-        "تم تحديث حالة الطلب."
-    );
-
-}
-            </script>
-                <div
-                                style="
-                                    margin-top:8px;
-                                    font-weight:800;
-                                "
-                            >
-                                ${formatPrice(
-                                    order.total
-                                )}
-                            </div>
-
-
-                            <div
-                                style="
-                                    display:flex;
-                                    gap:7px;
-                                    flex-wrap:wrap;
-                                    margin-top:10px;
-                                "
-                            >
-
-                                ${
-                                    order.status ===
-                                    "ready"
-                                        ? 
-                                            <button
-                                                class="btn btn-primary"
-                                                type="button"
-                                                onclick="driverCompleteOrder(
-                                                    ${order.id}
-                                                )"
-                                            >
-                                                تم التسليم
-                                            </button>
-                                          
-                                        : ""
-                                }
-
-                            </div>
-
-                        </div>
-                    `;
-
-                }
-            )
-            .join("");
-
-}
-
-
-async function driverCompleteOrder(
-    orderId
-) {
-
-    const {
-        error
-    } =
-        await supabaseClient
-            .rpc(
-                "driver_set_status",
-                {
-                    p_order_id:
-                        Number(orderId),
-
-                    p_status:
-                        "completed"
-                }
-            );
-
-
-    if (error) {
-
-        showToast(
-            error.message,
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    await loadDriverOrders();
-
-
-    showToast(
-        "تم تسجيل الطلب كمكتمل."
-    );
-
-}
-</script>
-            realtimeOrdersChannel =
-        supabaseClient
-            .channel(
-                "ain-altamr-orders"
-            )
-            .on(
-                "postgres_changes",
-                {
-                    event: "*",
-                    schema: "public",
-                    table: "orders"
-                },
-                async () => {
-
-                    if (
-                        AppState.role ===
-                        "restaurant_owner"
-                    ) {
-
-                        await loadRestaurantOrders();
-
-                    }
-
-
-                    if (
-                        AppState.role ===
-                        "driver"
-                    ) {
-
-                        await loadDriverOrders();
-
-                    }
-
-
-                    if (
-                        AppState.role ===
-                        "admin"
-                    ) {
-
-                        await loadAdminDashboard();
-
-                    }
-
-                }
-            )
-            .subscribe();
-
-}
-
-
-/*
-  مراقبة تسجيل الدخول.
-*/
-
-supabaseClient
-    .auth
-    .onAuthStateChange(
-        async (
-            event,
-            session
-        ) => {
-
-            AppState.session =
-                session;
-
-            AppState.user =
-                session?.user ||
-                null;
-
-
-            if (!AppState.user) {
-
-                AppState.role =
-                    null;
-
-                AppState.restaurant =
-                    null;
-
-                AppState.driver =
-                    null;
-
-                updateHeader();
-
-                showPage(
-                    "home"
-                );
-
-                return;
-
-            }
-
-
-            await resolveUserRole();
-
-            updateHeader();
-
-            startRealtime();
-
-        }
-    );
-
-
-/*
-  بدء التطبيق.
-*/
-
-async function startApplication() {
-
-    try {
-
-        showLoading();
-
-        loadCart();
-
-        updateHeader();
-
-        await loadRestaurants();
-
-        await loadCurrentSession();
-
-        startRealtime();
-
-    } catch (error) {
-
-        console.error(
-            "Application error:",
-            error
-        );
-
-        showToast(
-            "حدث خطأ أثناء تشغيل التطبيق.",
-            "error"
-        );
-
-    } finally {
-
-        hideLoading();
-
-    }
-
-}
-
-
-document.addEventListener(
-    "DOMContentLoaded",
-    startApplication
-);
-
-
-/*
-  إغلاق النوافذ عند الضغط خارجها.
-*/
-
-document.addEventListener(
-    "click",
-    event => {
-
-        if (
-            event.target.classList
-                .contains("modal")
-        ) {
-
-            event.target
-                .classList
-                .remove("open");
-
-        }
-
-    }
-);
-
-</script>
-
 
 </body>
 </html>
-                
