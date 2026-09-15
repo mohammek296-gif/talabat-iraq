@@ -604,41 +604,39 @@ onclick="sendOrder()">
 
 <script>
 
-const restaurants=[
+let restaurants=[];
 
-{
-name:"مطعم عين التمر",
-type:"مطعم عراقي",
-rating:"4.8",
-time:"25 - 35 دقيقة",
-icon:"🍽️"
-},
+async function loadRestaurants(){
 
-{
-name:"برغر تايم",
-type:"برغر",
-rating:"4.7",
-time:"20 - 30 دقيقة",
-icon:"🍔"
-},
+const {data,error}=await db
+.from("restaurants")
+.select("*");
 
-{
-name:"بيتزا العراق",
-type:"بيتزا",
-rating:"4.6",
-time:"30 - 40 دقيقة",
-icon:"🍕"
-},
+if(error){
 
-{
-name:"مشاوي الفرات",
-type:"مشاوي",
-rating:"4.9",
-time:"30 - 45 دقيقة",
-icon:"🍖"
+console.error("خطأ بجلب المطاعم:",error);
+
+return;
+
 }
 
-];
+restaurants=data.map(function(r){
+
+return{
+
+name:r.name,
+type:"مطعم",
+rating:"جديد",
+time:"25 - 35 دقيقة",
+icon:"🍽️"
+
+};
+
+});
+
+renderRestaurants();
+
+}
 
 
 const foods=[
@@ -1161,7 +1159,7 @@ name+
 }
 
 
-renderRestaurants();
+loadRestaurants();
 
 renderFoods();
 
