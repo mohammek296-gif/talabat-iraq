@@ -1130,7 +1130,41 @@ name+
 loadRestaurants();
 
 loadFoods();
+async function restaurantLogin(){
 
+  const email =
+    document.getElementById("restaurantEmail").value.trim();
+
+  const password =
+    document.getElementById("restaurantPassword").value;
+
+  if(!email || !password){
+
+    alert("يرجى إدخال البريد الإلكتروني وكلمة المرور");
+
+    return;
+  }
+
+  const { data, error } =
+    await db.auth.signInWithPassword({
+      email: email,
+      password: password
+    });
+
+  if(error){
+
+    alert("فشل تسجيل الدخول: " + error.message);
+
+    return;
+  }
+
+  alert("تم تسجيل الدخول بنجاح ✅");
+
+  document.getElementById("restaurantLogin").style.display = "none";
+
+  document.getElementById("restaurantPanel").style.display = "block";
+
+}
 </script>
 <div id="restaurantPanel" style="display:none;">
   <h2>لوحة المطعم 🍽️</h2>
