@@ -639,72 +639,40 @@ renderRestaurants();
 }
 
 
-const foods=[
+let foods=[];
 
-{
-name:"برغر لحم",
-description:"لحم مشوي مع جبنة وخضار وصوص خاص",
-price:6500,
-category:"برغر"
-},
+async function loadFoods(){
 
-{
-name:"دبل برغر",
-description:"قطعتان من اللحم مع الجبنة والصوص",
-price:8500,
-category:"برغر"
-},
+  const {data,error}=await db
+    .from("foods")
+    .select("*");
 
-{
-name:"بيتزا دجاج",
-description:"دجاج وجبنة وفلفل وزيتون",
-price:9500,
-category:"بيتزا"
-},
+  if(error){
 
-{
-name:"بيتزا مارجريتا",
-description:"طماطم وموزاريلا وريحان",
-price:8000,
-category:"بيتزا"
-},
+    console.error("خطأ بجلب الوجبات:",error);
 
-{
-name:"وجبة دجاج",
-description:"دجاج وبطاطا وخبز ومشروب",
-price:7500,
-category:"دجاج"
-},
+    return;
 
-{
-name:"كباب عراقي",
-description:"كباب لحم مع خبز وسلطة",
-price:9000,
-category:"مشاوي"
-},
+  }
 
-{
-name:"تكة لحم",
-description:"قطع لحم مشوية مع خبز وسلطة",
-price:10000,
-category:"مشاوي"
-},
+  foods=data.map(function(f){
 
-{
-name:"كيكة شوكولاتة",
-description:"كيكة شوكولاتة مع كريمة",
-price:6000,
-category:"حلويات"
-},
+    return{
 
-{
-name:"بقلاوة",
-description:"بقلاوة عراقية مشكلة",
-price:5000,
-category:"حلويات"
+      name:f.name,
+      description:f.description || "",
+      price:Number(f.price),
+      category:f.category || "الكل",
+      image_url:f.image_url || "",
+      restaurant_id:f.restaurant_id
+
+    };
+
+  });
+
+  renderFoods();
+
 }
-
-];
 
 
 let cart=[];
@@ -1161,7 +1129,7 @@ name+
 
 loadRestaurants();
 
-renderFoods();
+loadFoods();
 
 </script>
 
