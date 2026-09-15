@@ -1194,10 +1194,17 @@ async function restaurantLogin(){
   }
 
   const { data, error } =
-    await db.auth.signUp({
-      email: email,
-      password: password
-    });
+  await db.auth.signUp({
+    email: email,
+    password: password,
+    options: {
+      data: {
+        role: "restaurant_owner",
+        restaurant_name: restaurantName,
+        owner_name: ownerName
+      }
+    }
+  });
 
   if(error){
 
@@ -1209,22 +1216,6 @@ async function restaurantLogin(){
   if(!data.user){
 
     alert("تم إنشاء الحساب، لكن لم يتم العثور على المستخدم.");
-
-    return;
-  }
-
-  const { error: restaurantError } =
-    await db
-      .from("restaurants")
-      .insert({
-        name: restaurantName,
-        owner_name: ownerName,
-        owner_id: data.user.id
-      });
-
-  if(restaurantError){
-
-    alert("تم إنشاء الحساب لكن تعذر إنشاء المطعم: " + restaurantError.message);
 
     return;
   }
