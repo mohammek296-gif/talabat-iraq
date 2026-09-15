@@ -1227,18 +1227,18 @@ async function restaurantLogin(){
   }
 </script>
 <div id="restaurantPanel" style="display:none;">
+  <button onclick="document.getElementById('restaurantLogin').style.display='block';">
+دخول المطعم 🍽️
+</button>
+
+<button onclick="document.getElementById('restaurantRegister').style.display='block';">
+تسجيل مطعم جديد 🏪
+</button>
   <h2>لوحة المطعم 🍽️</h2>
   <p>هنا ستظهر طلبات المطعم الجديدة.</p>
 </div>
   
-<button onclick="document.getElementById('restaurantLogin').style.display='block';">
-  دخول المطعم 🍽️
-</button>
-
-<button onclick="document.getElementById('restaurantRegister').style.display='block';">
-  تسجيل مطعم جديد 🏪
-</button>
-  <div id="restaurantLogin" style="display:none;">
+  <div id="restaurantPanel">
 
   <h2>دخول المطعم 🍽️</h2>
 
