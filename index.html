@@ -1165,6 +1165,75 @@ async function restaurantLogin(){
   document.getElementById("restaurantPanel").style.display = "block";
 
 }
+  async function registerRestaurant(){
+
+  const restaurantName =
+    document.getElementById("newRestaurantName").value.trim();
+
+  const ownerName =
+    document.getElementById("restaurantOwnerName").value.trim();
+
+  const email =
+    document.getElementById("newRestaurantEmail").value.trim();
+
+  const password =
+    document.getElementById("newRestaurantPassword").value;
+
+  if(!restaurantName || !ownerName || !email || !password){
+
+    alert("يرجى إدخال جميع المعلومات");
+
+    return;
+  }
+
+  if(password.length < 6){
+
+    alert("كلمة المرور يجب أن تكون 6 أحرف على الأقل");
+
+    return;
+  }
+
+  const { data, error } =
+    await db.auth.signUp({
+      email: email,
+      password: password
+    });
+
+  if(error){
+
+    alert("تعذر إنشاء الحساب: " + error.message);
+
+    return;
+  }
+
+  if(!data.user){
+
+    alert("تم إنشاء الحساب، لكن لم يتم العثور على المستخدم.");
+
+    return;
+  }
+
+  const { error: restaurantError } =
+    await db
+      .from("restaurants")
+      .insert({
+        name: restaurantName,
+        owner_name: ownerName,
+        owner_id: data.user.id
+      });
+
+  if(restaurantError){
+
+    alert("تم إنشاء الحساب لكن تعذر إنشاء المطعم: " + restaurantError.message);
+
+    return;
+  }
+
+  alert("تم إنشاء حساب المطعم بنجاح ✅");
+
+  document.getElementById("restaurantRegister").style.display = "none";
+
+  }
 </script>
 <div id="restaurantPanel" style="display:none;">
   <h2>لوحة المطعم 🍽️</h2>
@@ -1189,6 +1258,39 @@ async function restaurantLogin(){
 
   <button onclick="restaurantLogin()">
     دخول
+  </button>
+
+  </div>
+  <div id="restaurantRegister" style="display:none;">
+
+  <h2>تسجيل مطعم جديد 🍽️</h2>
+
+  <input
+    id="newRestaurantName"
+    type="text"
+    placeholder="اسم المطعم"
+  >
+
+  <input
+    id="restaurantOwnerName"
+    type="text"
+    placeholder="اسم صاحب المطعم"
+  >
+
+  <input
+    id="newRestaurantEmail"
+    type="email"
+    placeholder="البريد الإلكتروني"
+  >
+
+  <input
+    id="newRestaurantPassword"
+    type="password"
+    placeholder="كلمة المرور"
+  >
+
+  <button onclick="registerRestaurant()">
+    إنشاء حساب المطعم
   </button>
 
   </div>
