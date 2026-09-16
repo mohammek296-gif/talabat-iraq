@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>عين التمر | توصيل الطعام</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Tahoma,sans-serif;background:#f7f7f7;color:#222}
+button,input,textarea,select{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:11px 16px}
+header{background:#fff;border-bottom:1px solid #eee;position:sticky;top:0;z-index:10}.nav{max-width:1100px;margin:auto;padding:14px 18px;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.logo{font-weight:800;color:#f4511e;font-size:22px}.navlinks{display:flex;gap:7px;flex-wrap:wrap}.nav button{background:#f5f5f5}.primary{background:#f4511e;color:#fff}.danger{background:#d32f2f;color:#fff}.success{background:#2e7d32;color:#fff}
+main{max-width:1100px;margin:auto;padding:24px 18px}.hero{text-align:center;padding:35px 10px}.hero h1{color:#f4511e;font-size:32px;margin:8px}.hero p{color:#666}
+.search{display:flex;gap:8px;max-width:700px;margin:20px auto}.search input{flex:1;padding:14px;border:1px solid #ddd;border-radius:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}.card{background:#fff;border:1px solid #eee;border-radius:16px;padding:16px;box-shadow:0 2px 10px #00000008}.card h3{margin-top:0}.muted{color:#777;font-size:14px}.price{font-weight:800;color:#f4511e}.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.panel{background:#fff;border-radius:18px;padding:20px;margin:16px 0;border:1px solid #eee}.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}.field{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}.field input,.field textarea,.field select{padding:11px;border:1px solid #ddd;border-radius:10px}
+.hidden{display:none!important}.badge{display:inline-block;padding:5px 9px;border-radius:20px;background:#eee;font-size:12px}.modal{position:fixed;inset:0;background:#0008;display:flex;align-items:center;justify-content:center;padding:18px;z-index:20}.modalbox{background:#fff;border-radius:18px;max-width:520px;width:100%;padding:20px;max-height:90vh;overflow:auto}.close{float:left;background:#eee}
+table{width:100%;border-collapse:collapse}th,td{padding:10px;border-bottom:1px solid #eee;text-align:right}
+footer{text-align:center;color:#888;padding:35px}
+</style>
+</head>
+<body>
+<header><div class="nav">
+<div class="logo">عين التمر</div>
+<div class="navlinks">
+<button onclick="showPage('home')">الرئيسية</button>
+<button onclick="showPage('orders')">طلباتي</button>
+<button onclick="openAuth()">تسجيل الدخول / تسجيل</button>
+<button id="logoutBtn" class="danger hidden" onclick="logout()">خروج</button>
+</div></div></header>
+
+<main>
+<section id="homePage">
+<div class="hero"><h1>اطلب أكلك من مطاعم عين التمر</h1><p>اختر مطعمك، اطلب وجبتك وتابع طلبك خطوة بخطوة</p>
+<div class="search"><input id="search" placeholder="ابحث عن مطعم أو وجبة" oninput="renderHome()"></div></div>
+<h2>المطاعم</h2><div id="restaurants" class="grid"></div>
+<h2>الوجبات</h2><div id="foods" class="grid"></div>
+</section>
+
+<section id="ordersPage" class="hidden"><h2>طلباتي</h2><div id="myOrders"></div></section>
+<section id="dashboardPage" class="hidden"></section>
+</main>
+
+<div id="authModal" class="modal hidden"><div class="modalbox">
+<button class="close" onclick="closeAuth()">✕</button><h2 id="authTitle">تسجيل الدخول</h2>
+<div id="registerFields" class="hidden">
+<div class="field"><label>الاسم الكامل</label><input id="fullName"></div>
+<div class="field"><label>الهاتف</label><input id="phone"></div>
+<div class="field"><label>نوع الحساب</label><select id="role" onchange="toggleRestaurantFields()"><option value="customer">زبون</option><option value="restaurant_owner">صاحب مطعم</option><option value="driver">سائق</option></select></div>
+<div id="restaurantFields" class="hidden"><div class="field"><label>اسم المطعم</label><input id="restaurantName"></div></div>
+</div>
+<div class="field"><label>البريد الإلكتروني</label><input id="email" type="email"></div>
+<div class="field"><label>كلمة المرور</label><input id="password" type="password"></div>
+<button id="authAction" class="primary" onclick="authAction()">دخول</button>
+<button id="switchAuth" onclick="switchAuth()">إنشاء حساب جديد</button>
+<p id="authMsg" class="muted"></p>
+</div></div>
+
+<div id="foodModal" class="modal hidden"><div class="modalbox">
+<button class="close" onclick="closeFood()">✕</button><h2 id="foodTitle"></h2><p id="foodDesc"></p><p id="foodPrice" class="price"></p>
+<div class="field"><label>الكمية</label><input id="qty" type="number" min="1" value="1"></div>
+<button class="primary" onclick="addCart()">إضافة للسلة</button>
+</div></div>
+
+<div id="cartModal" class="modal hidden"><div class="modalbox">
+<button class="close" onclick="closeCart()">✕</button><h2>السلة</h2><div id="cart"></div>
+<div class="field"><label>الاسم</label><input id="orderName"></div>
+<div class="field"><label>الهاتف</label><input id="orderPhone"></div>
+<div class="field"><label>العنوان</label><textarea id="orderAddress"></textarea></div>
+<button class="primary" onclick="placeOrder()">إرسال الطلب</button>
+</div></div>
+
+<footer>تطبيق عين التمر 2026</footer>
+
+<script>
+const SUPABASE_URL='https://jyhmxyhzmxwprirhkjnh.supabase.co';
+const SUPABASE_KEY='sb_publishable_BP1eIZYbAQR7Dh78-9GJrQ_oy8uuuhc';
+let session=null,restaurants=[],foods=[],cartItems=[],selectedFood=null,authRegister=false;
+
+async function api(path,options={}){
+  const headers={'apikey':SUPABASE_KEY,'Content-Type':'application/json',...(session?{'Authorization':'Bearer '+session.access_token}:{})};
+  const r=await fetch(SUPABASE_URL+'/rest/v1/'+path,{...options,headers:{...headers,...(options.headers||{})}});
+  const text=await r.text(); let data=text?JSON.parse(text):null;
+  if(!r.ok) throw new Error(data?.message||data?.error_description||text||'حدث خطأ');
+  return data;
+}
+async function rpc(name,body){
+  const headers={'apikey':SUPABASE_KEY,'Authorization':session?'Bearer '+session.access_token:'Bearer '+SUPABASE_KEY,'Content-Type':'application/json'};
+  const r=await fetch(SUPABASE_URL+'/rest/v1/rpc/'+name,{method:'POST',headers,body:JSON.stringify(body)});
+  const text=await r.text();let data=text?JSON.parse(text):null;if(!r.ok)throw new Error(data?.message||text||'حدث خطأ');return data;
+}
+async function auth(method,body){
+ const r=await fetch(SUPABASE_URL+'/auth/v1/'+method,{method:'POST',headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json'},body:JSON.stringify(body)});
+ const text=await r.text();let d=text?JSON.parse(text):null;if(!r.ok)throw new Error(d?.msg||d?.message||text||'خطأ بالمصادقة');return d;
+}
+async function loadSession(){const s=localStorage.getItem('at_session');if(s){try{session=JSON.parse(s)}catch{session=null}}updateNav();}
+function updateNav(){document.getElementById('logoutBtn').classList.toggle('hidden',!session)}
+async function loadHome(){
+ try{
+  restaurants=await api('restaurants?select=*&order=id.asc');
+  foods=await api('foods?select=*&order=id.asc');
+  renderHome();
+ }catch(e){document.getElementById('restaurants').innerHTML='<p>تعذر تحميل البيانات: '+esc(e.message)+'</p>'}
+}
+function esc(x){return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function renderHome(){
+ const q=(document.getElementById('search').value||'').trim().toLowerCase();
+ const rs=restaurants.filter(r=>!q||r.name.toLowerCase().includes(q));
+ const fs=foods.filter(f=>!q||f.name.toLowerCase().includes(q));
+ document.getElementById('restaurants').innerHTML=rs.map(r=>`<div class="card"><h3>${esc(r.name)}</h3><p class="muted">${esc(r.address||'عين التمر')}</p><button class="primary" onclick="filterRestaurant(${r.id})">عرض الوجبات</button></div>`).join('')||'<p>لا توجد مطاعم.</p>';
+ document.getElementById('foods').innerHTML=fs.map(f=>`<div class="card"><h3>${esc(f.name)}</h3><p class="muted">${esc(f.description||'')}</p><p class="price">${Number(f.price).toLocaleString('ar-IQ')} د.ع</p><button class="primary" onclick="openFood(${f.id})">أضف للسلة</button></div>`).join('')||'<p>لا توجد وجبات.</p>';
+}
+function filterRestaurant(id){document.getElementById('search').value='';const fs=foods.filter(f=>f.restaurant_id===id);document.getElementById('foods').innerHTML=fs.map(f=>`<div class="card"><h3>${esc(f.name)}</h3><p>${esc(f.description||'')}</p><p class="price">${Number(f.price).toLocaleString('ar-IQ')} د.ع</p><button class="primary" onclick="openFood(${f.id})">أضف للسلة</button></div>`).join('')||'<p>لا توجد وجبات.</p>'}
+function openFood(id){selectedFood=foods.find(f=>f.id===id);if(!selectedFood)return;foodTitle.textContent=selectedFood.name;foodDesc.textContent=selectedFood.description||'';foodPrice.textContent=Number(selectedFood.price).toLocaleString('ar-IQ')+' د.ع';qty.value=1;foodModal.classList.remove('hidden')}
+function closeFood(){foodModal.classList.add('hidden')}
+function addCart(){const n=Math.max(1,Number(qty.value)||1);const old=cartItems.find(x=>x.food_id===selectedFood.id);if(old)old.quantity+=n;else cartItems.push({food_id:selectedFood.id,restaurant_id:selectedFood.restaurant_id,name:selectedFood.name,price:Number(selectedFood.price),quantity:n});closeFood();renderCart();cartModal.classList.remove('hidden')}
+function renderCart(){cart.innerHTML=cartItems.map(x=>`<div class="card"><b>${esc(x.name)}</b> × ${x.quantity}<p class="price">${(x.price*x.quantity).toLocaleString('ar-IQ')} د.ع</p><button class="danger" onclick="removeCart(${x.food_id})">حذف</button></div>`).join('')||'<p>السلة فارغة.</p>'}
+function removeCart(id){cartItems=cartItems.filter(x=>x.food_id!==id);renderCart()}
+function closeCart(){cartModal.classList.add('hidden')}
+async function placeOrder(){
+ if(!session){closeCart();openAuth();authMsg.textContent='سجّل الدخول أولًا لإرسال الطلب.';return}
+ if(!cartItems.length)return alert('السلة فارغة');
+ const rid=cartItems[0].restaurant_id;if(cartItems.some(x=>x.restaurant_id!==rid))return alert('لا يمكن جمع وجبات من مطاعم مختلفة في طلب واحد.');
+ try{
+  const d=await rpc('create_food_order',{p_restaurant_id:rid,p_customer_name:orderName.value.trim(),p_customer_phone:orderPhone.value.trim(),p_customer_address:orderAddress.value.trim(),p_items:cartItems.map(x=>({food_id:x.food_id,quantity:x.quantity}))});
+  alert('تم إرسال الطلب بنجاح. رقم الطلب: '+(d?.order_number||d?.id||''));
+  cartItems=[];closeCart();showPage('orders');loadOrders();
+ }catch(e){alert(e.message)}
+}
+function openAuth(){authModal.classList.remove('hidden');authMsg.textContent=''}
+function closeAuth(){authModal.classList.add('hidden')}
+function switchAuth(){authRegister=!authRegister;registerFields.classList.toggle('hidden',!authRegister);authTitle.textContent=authRegister?'إنشاء حساب':'تسجيل الدخول';authAction.textContent=authRegister?'إنشاء الحساب':'دخول';switchAuth.textContent=authRegister?'لدي حساب بالفعل':'إنشاء حساب جديد'}
+function toggleRestaurantFields(){restaurantFields.classList.toggle('hidden',role.value!=='restaurant_owner')}
+async function authAction(){
+ try{
+  if(authRegister){
+   const r=await auth('signup',{email:email.value.trim(),password:password.value,user_metadata:{full_name:fullName.value.trim(),phone:phone.value.trim(),role:role.value,owner_name:fullName.value.trim(),restaurant_name:restaurantName.value.trim()}});
+   if(r.access_token){session=r;localStorage.setItem('at_session',JSON.stringify(r));await afterLogin()}
+   else authMsg.textContent='تم إنشاء الحساب. إذا طُلب تأكيد البريد، أكّد البريد ثم سجّل الدخول.';
+  }else{
+   const r=await auth('token?grant_type=password',{email:email.value.trim(),password:password.value});
+   session=r;localStorage.setItem('at_session',JSON.stringify(r));await afterLogin();
+  }
+ }catch(e){authMsg.textContent=e.message}
+}
+async function afterLogin(){
+ updateNav();closeAuth();
+ let roleName='customer';
+ try{roleName=await rpc('get_my_role',{})}catch{}
+ if(Array.isArray(roleName))roleName=roleName[0]?.get_my_role||roleName[0]?.role||'customer';
+ if(typeof roleName==='object')roleName=roleName.get_my_role||roleName.role||'customer';
+ if(roleName==='restaurant_owner')showRestaurantDashboard();
+ else if(roleName==='driver')showDriverDashboard();
+ else if(roleName==='admin')showAdminDashboard();
+ else showPage('home');
+}
+async function logout(){session=null;localStorage.removeItem('at_session');updateNav();showPage('home')}
+function showPage(p){
+ homePage.classList.toggle('hidden',p!=='home');ordersPage.classList.toggle('hidden',p!=='orders');dashboardPage.classList.add('hidden');
+ if(p==='orders'){loadOrders()}
+}
+async function loadOrders(){
+ if(!session){myOrders.innerHTML='<p>سجّل الدخول أولًا.</p>';return}
+ try{const d=await api('orders?select=*&customer_id=eq.'+encodeURIComponent(session.user.id)+'&order=created_at.desc');myOrders.innerHTML=d.map(o=>`<div class="card"><h3>طلب #${esc(o.order_number||o.id)}</h3><p>الحالة: <b>${esc(o.status)}</b></p><p class="price">${Number(o.total||0).toLocaleString('ar-IQ')} د.ع</p></div>`).join('')||'<p>لا توجد طلبات.</p>'}catch(e){myOrders.innerHTML='<p>'+esc(e.message)+'</p>'}
+}
+async function showRestaurantDashboard(){
+ showPage('dash');dashboardPage.classList.remove('hidden');dashboardPage.innerHTML='<div class="panel"><h2>لوحة صاحب المطعم</h2><p>جارٍ التحميل...</p></div>';
+ try{
+  const rs=await api('restaurants?select=*&owner_id=eq.'+encodeURIComponent(session.user.id));const r=rs[0];
+  const fs=r?await api('foods?select=*&restaurant_id=eq.'+r.id+'&order=id.desc'):[];
+  const os=r?await api('orders?select=*&restaurant_id=eq.'+r.id+'&order=created_at.desc'):[];
+  dashboardPage.innerHTML=`<div class="panel"><h2>${esc(r?.name||'لوحة المطعم')}</h2><p>إدارة الوجبات والطلبات.</p></div>
+  <div class="panel"><h3>الوجبات</h3><div class="grid">${fs.map(f=>`<div class="card"><b>${esc(f.name)}</b><p>${Number(f.price).toLocaleString('ar-IQ')} د.ع</p></div>`).join('')||'<p>لا توجد وجبات.</p>'}</div></div>
+  <div class="panel"><h3>الطلبات</h3>${os.map(o=>`<div class="card"><b>#${esc(o.order_number||o.id)}</b><p>${esc(o.customer_name)} — ${esc(o.customer_phone)}</p><p>الحالة: ${esc(o.status)}</p><p>${Number(o.total||0).toLocaleString('ar-IQ')} د.ع</p></div>`).join('')||'<p>لا توجد طلبات.</p>'}</div>`;
+ }catch(e){dashboardPage.innerHTML='<div class="panel"><h2>لوحة المطعم</h2><p>'+esc(e.message)+'</p></div>'}
+}
+async function showDriverDashboard(){
+ showPage('dash');dashboardPage.classList.remove('hidden');dashboardPage.innerHTML='<div class="panel"><h2>لوحة السائق</h2><p>تحميل الطلبات المعيّنة...</p></div>';
+ try{
+  const a=await api('order_assignments?select=*&driver_id=eq.'+encodeURIComponent(session.user.id)+'&order=created_at.desc');
+  dashboardPage.innerHTML='<div class="panel"><h2>لوحة السائق</h2><button class="success" onclick="driverStatus(true)">متاح</button> <button class="danger" onclick="driverStatus(false)">غير متاح</button></div>'+
+  '<div class="panel"><h3>التعيينات</h3>'+a.map(x=>`<div class="card"><b>طلب #${esc(x.order_id)}</b><p>الحالة: ${esc(x.status)}</p></div>`).join('')||'<p>لا توجد تعيينات.</p>'+'</div>';
+ }catch(e){dashboardPage.innerHTML='<div class="panel"><h2>لوحة السائق</h2><p>'+esc(e.message)+'</p></div>'}
+}
+async function driverStatus(v){try{await rpc('driver_set_status',{p_is_available:v});alert(v?'تم تفعيل حالة متاح':'تم إيقاف حالة متاح')}catch(e){alert(e.message)}}
+async function showAdminDashboard(){
+ showPage('dash');dashboardPage.classList.remove('hidden');dashboardPage.innerHTML='<div class="panel"><h2>لوحة الإدارة</h2><p>تحميل البيانات...</p></div>';
+ try{
+  const [rs,fs,os,ds]=await Promise.all([api('restaurants?select=*'),api('foods?select=*'),api('orders?select=*'),api('drivers?select=*')]);
+  dashboardPage.innerHTML=`<div class="panel"><h2>لوحة الإدارة</h2><div class="grid">
+  <div class="card"><h3>المطاعم</h3><b>${rs.length}</b></div><div class="card"><h3>الوجبات</h3><b>${fs.length}</b></div><div class="card"><h3>الطلبات</h3><b>${os.length}</b></div><div class="card"><h3>السائقون</h3><b>${ds.length}</b></div></div></div>
+  <div class="panel"><h3>آخر الطلبات</h3><table><tr><th>الطلب</th><th>الزبون</th><th>الحالة</th><th>المجموع</th></tr>${os.slice(0,30).map(o=>`<tr><td>${esc(o.order_number||o.id)}</td><td>${esc(o.customer_name)}</td><td>${esc(o.status)}</td><td>${Number(o.total||0).toLocaleString('ar-IQ')}</td></tr>`).join('')}</table></div>`;
+ }catch(e){dashboardPage.innerHTML='<div class="panel"><h2>لوحة الإدارة</h2><p>'+esc(e.message)+'</p></div>'}
+}
+loadSession().then(()=>loadHome());
+</script>
+</body>
+</html>
