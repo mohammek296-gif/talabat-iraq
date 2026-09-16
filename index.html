@@ -146,8 +146,8 @@ async function afterLogin(){
  updateNav();closeAuth();
  let roleName='customer';
  try{roleName=await rpc('get_my_role',{})}catch{}
- if(Array.isArray(roleName))roleName=roleName[0]?.get_my_role||roleName[0]?.role||'customer';
- if(typeof roleName==='object')roleName=roleName.get_my_role||roleName.role||'customer';
+ if(Array.isArray(roleName))roleName=roleName[0]?.get_my_role || roleName[0]?.role || 'customer';
+if(typeof roleName==='object' && roleName!==null)roleName=roleName.get_my_role || roleName.role || 'customer';
  if(roleName==='restaurant_owner')showRestaurantDashboard();
  else if(roleName==='driver')showDriverDashboard();
  else if(roleName==='admin')showAdminDashboard();
