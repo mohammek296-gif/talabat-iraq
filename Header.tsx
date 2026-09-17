@@ -1,0 +1,3 @@
+'use client';
+import Link from 'next/link';import {useCart} from './CartProvider';import {useEffect,useState} from 'react';
+export default function Header(){const{items}=useCart();const[n,setN]=useState(0);useEffect(()=>setN(items.reduce((s,i)=>s+i.quantity,0)),[items]);return <header><div className="nav wrap"><Link href="/" className="logo">🍔 كربلاء فود</Link><nav><Link href="/restaurants">المطاعم</Link><Link href="/orders">طلباتي</Link><Link href="/restaurant/register">سجّل مطعمك</Link><Link href="/driver">العمل معنا</Link><Link href="/auth">دخول</Link><Link href="/cart" className="cart">🛒 السلة <b>{n}</b></Link></nav></div></header>}
