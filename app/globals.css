@@ -414,6 +414,91 @@ img {
   font-weight: 700;
 }
 
+/* Authentication */
+
+.auth-section {
+  min-height: calc(100vh - 72px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 16px;
+  background: #f7f7f7;
+}
+
+.auth-card {
+  width: min(460px, 100%);
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 35px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.06);
+}
+
+.auth-card h1 {
+  text-align: center;
+  font-size: 30px;
+  margin-bottom: 8px;
+}
+
+.auth-card > p {
+  text-align: center;
+  color: var(--muted);
+  margin-bottom: 28px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.auth-form label {
+  font-weight: 700;
+  margin-top: 8px;
+}
+
+.auth-form input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  outline: none;
+  background: #ffffff;
+}
+
+.auth-form input:focus {
+  border-color: var(--primary);
+}
+
+.auth-form .primary-button {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 22px;
+  color: var(--muted);
+}
+
+.auth-footer a {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.auth-footer a:hover {
+  color: var(--primary-dark);
+}
+
+@media (max-width: 600px) {
+  .auth-card {
+    padding: 25px 20px;
+  }
+
+  .auth-section {
+    min-height: calc(100vh - 64px);
+  }
+}
 .restaurant-info button:not(.add-button):hover {
   background: #e5e5e5;
 }
