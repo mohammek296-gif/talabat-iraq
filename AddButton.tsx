@@ -1,1 +1,0 @@
-'use client';import {useCart,CartItem} from '@/components/CartProvider';export default function AddButton({item}:{item:Omit<CartItem,'quantity'>}){const{add}=useCart();return <button onClick={()=>add(item)}>أضف للسلة</button>}
