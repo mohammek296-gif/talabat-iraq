@@ -19,10 +19,29 @@ export default function Header() {
           <Link href="/orders">طلباتي</Link>
         </nav>
 
-        <Link href="/cart" className="cart-button">
-          🛒 السلة
-          {itemCount > 0 &&  (${itemCount})}
-        </Link>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+          }}
+        >
+          <Link
+            href="/login"
+            className="secondary-button"
+            style={{
+              padding: "9px 14px",
+              fontSize: "14px",
+            }}
+          >
+            تسجيل الدخول
+          </Link>
+
+          <Link href="/cart" className="cart-button">
+            🛒 السلة
+            {itemCount > 0 &&  (${itemCount})}
+          </Link>
+        </div>
       </div>
     </header>
   );
