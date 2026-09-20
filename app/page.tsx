@@ -10,6 +10,33 @@ const categories = [
   { name: "مشروبات", icon: "🥤" },
 ];
 
+const restaurants = [
+  {
+    id: "karbala-burger",
+    name: "مطعم كربلاء برغر",
+    category: "برغر • وجبات سريعة",
+    rating: "4.8",
+    deliveryTime: "25 دقيقة",
+    image: "🍔",
+  },
+  {
+    id: "karbala-pizza",
+    name: "بيتزا كربلاء",
+    category: "بيتزا • إيطالي",
+    rating: "4.7",
+    deliveryTime: "30 دقيقة",
+    image: "🍕",
+  },
+  {
+    id: "karbala-chicken",
+    name: "دجاج كربلاء",
+    category: "دجاج • وجبات سريعة",
+    rating: "4.6",
+    deliveryTime: "20 دقيقة",
+    image: "🍗",
+  },
+];
+
 export default function HomePage() {
   return (
     <main>
@@ -65,6 +92,7 @@ export default function HomePage() {
         <div className="container">
           <div className="section-heading">
             <h2>ماذا تشتهي اليوم؟</h2>
+
             <p>اختر نوع الطعام الذي تفضله</p>
           </div>
 
@@ -90,65 +118,61 @@ export default function HomePage() {
         <div className="container">
           <div className="section-heading">
             <h2>مطاعم مميزة</h2>
-            <p>اكتشف المطاعم المتاحة بالقرب منك</p>
+
+            <p>
+              اكتشف المطاعم المتاحة بالقرب منك
+            </p>
           </div>
 
           <div className="restaurant-grid">
-            <article className="restaurant-card">
-              <div className="restaurant-image">🍔</div>
+            {restaurants.map((restaurant) => (
+              <article
+                className="restaurant-card"
+                key={restaurant.id}
+              >
+                <Link
+                  href={/restaurants/${restaurant.id}}
+                >
+                  <div className="restaurant-image">
+                    {restaurant.image}
+                  </div>
+                </Link>
 
-              <div className="restaurant-info">
-                <h3>مطعم كربلاء برغر</h3>
+                <div className="restaurant-info">
+                  <Link
+                    href={/restaurants/${restaurant.id}}
+                  >
+                    <h3>{restaurant.name}</h3>
+                  </Link>
 
-                <p>برغر • وجبات سريعة</p>
+                  <p>{restaurant.category}</p>
 
-                <div className="restaurant-meta">
-                  <span>⭐ 4.8</span>
-                  <span>🚚 25 دقيقة</span>
+                  <div className="restaurant-meta">
+                    <span>
+                      ⭐ {restaurant.rating}
+                    </span>
+
+                    <span>
+                      🚚 {restaurant.deliveryTime}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </article>
-
-            <article className="restaurant-card">
-              <div className="restaurant-image">🍕</div>
-
-              <div className="restaurant-info">
-                <h3>بيتزا كربلاء</h3>
-
-                <p>بيتزا • إيطالي</p>
-
-                <div className="restaurant-meta">
-                  <span>⭐ 4.7</span>
-                  <span>🚚 30 دقيقة</span>
-                </div>
-              </div>
-            </article>
-
-            <article className="restaurant-card">
-              <div className="restaurant-image">🍗</div>
-
-              <div className="restaurant-info">
-                <h3>دجاج كربلاء</h3>
-
-                <p>دجاج • وجبات سريعة</p>
-
-                <div className="restaurant-meta">
-                  <span>⭐ 4.6</span>
-                  <span>🚚 20 دقيقة</span>
-                </div>
-              </div>
-            </article>
+              </article>
+            ))}
           </div>
         </div>
       </section>
-
-      <footer className="footer">
+<footer className="footer">
         <div className="container">
           <h3>كربلاء فود</h3>
 
-          <p>منصة طلب وتوصيل الطعام في كربلاء</p>
+          <p>
+            منصة طلب وتوصيل الطعام في كربلاء
+          </p>
 
-          <p>© 2026 كربلاء فود. جميع الحقوق محفوظة.</p>
+          <p>
+            © 2026 كربلاء فود. جميع الحقوق محفوظة.
+          </p>
         </div>
       </footer>
     </main>
