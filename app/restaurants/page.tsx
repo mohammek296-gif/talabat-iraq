@@ -1,108 +1,189 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
-import AddButton from "@/components/AddButton";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 import Header from "@/components/Header";
 
-const restaurants = [
-  {
-    id: "karbala-burger",
-    name: "مطعم كربلاء برغر",
-    category: "برغر • وجبات سريعة",
-    rating: "4.8",
-    deliveryTime: "25 دقيقة",
-    image: "🍔",
-    price: 5000,
-  },
-  {
-    id: "karbala-pizza",
-    name: "بيتزا كربلاء",
-    category: "بيتزا • إيطالي",
-    rating: "4.7",
-    deliveryTime: "30 دقيقة",
-    image: "🍕",
-    price: 7000,
-  },
-  {
-    id: "karbala-chicken",
-    name: "دجاج كربلاء",
-    category: "دجاج • وجبات سريعة",
-    rating: "4.6",
-    deliveryTime: "20 دقيقة",
-    image: "🍗",
-    price: 6000,
-  },
-];
+export default function RegisterPage() {
+  const router = useRouter();
 
-export default function RestaurantsPage() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const handleSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
+    event.preventDefault();
+
+    setError("");
+    setSuccess("");
+
+    if (!supabase) {
+      setError("لم يتم إعداد اتصال Supabase بعد.");
+      return;
+    }
+
+    if (password.length < 6) {
+      setError(
+        "يجب أن تتكون كلمة المرور من 6 أحرف أو أكثر."
+      );
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const { data, error: registerError } =
+        await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: {
+              name,
+            },
+          },
+        });
+
+      if (registerError) {
+        setError(registerError.message);
+        return;
+      }
+
+      if (data.session) {
+        router.push("/");
+        router.refresh();
+        return;
+      }
+
+      setSuccess(
+        "تم إنشاء الحساب. تحقق من بريدك الإلكتروني لتأكيد الحساب."
+      );
+    } catch {
+      setError("حدث خطأ أثناء إنشاء الحساب.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <main>
       <Header />
 
-      <section className="restaurants">
-        <div className="container">
-          <div className="section-heading">
-            <h1>المطاعم</h1>
+      <section className="auth-section">
+        <div className="auth-card">
+          <h1>إنشاء حساب</h1>
 
-            <p>
-              اختر مطعمك المفضل واطلب وجبتك
-            </p>
-          </div>
+          <p>
+            أنشئ حسابك وابدأ الطلب من كربلاء فود
+          </p>
 
-          <div className="restaurant-grid">
-            {restaurants.map((restaurant) => (
-              <article
-                className="restaurant-card"
-                key={restaurant.id}
-              >
-                <Link
-                  href={/restaurants/${restaurant.id}}
-                >
-                  <div className="restaurant-image">
-                    {restaurant.image}
-                  </div>
-                </Link>
+          {error && (
+            <div
+              style={{
+                background: "#ffe8e8",
+                color: "#b42318",
+                padding: "12px",
+                borderRadius: "10px",
+                marginBottom: "18px",
+                fontSize: "14px",
+              }}
+            >
+              {error}
+            </div>
+          )}
 
-                <div className="restaurant-info">
-                  <Link
-                    href={/restaurants/${restaurant.id}}
-                  >
-                    <h3>{restaurant.name}</h3>
-                  </Link>
+          {success && (
+            <div
+              style={{
+                background: "#e8f7ee",
+                color: "#18794e",
+                padding: "12px",
+                borderRadius: "10px",
+                marginBottom: "18px",
+                fontSize: "14px",
+              }}
+            >
+              {success}
+            </div>
+          )}
 
-                  <p>{restaurant.category}</p>
+          <form
+            onSubmit={handleSubmit}
+            className="auth-form"
+          >
+            <label htmlFor="name">
+              الاسم
+            </label>
 
-                  <div className="restaurant-meta">
-                    <span>
-                      ⭐ {restaurant.rating}
-                    </span>
+            <input
+              id="name"
+              type="text"
+              value={name}
+              onChange={(event) =>
+                setName(event.target.value)
+              }
+              placeholder="أدخل اسمك"
+              autoComplete="name"
+              required
+            />
 
-                    <span>
-                      🚚 {restaurant.deliveryTime}
-                    </span>
-                  </div>
+            <label htmlFor="email">
+              البريد الإلكتروني
+            </label>
 
-                  <div style={{ marginTop: "16px" }}>
-                    <AddButton
-                      id={restaurant.id}
-                      name={restaurant.name}
-                      price={restaurant.price}
-                    />
-                  </div>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(event) =>
+                setEmail(event.target.value)
+              }
+              placeholder="example@email.com"
+              autoComplete="email"
+              required
+            />
 
-                  <div style={{ marginTop: "10px" }}>
-                    <Link
-                      href={/restaurants/${restaurant.id}}
-                      className="secondary-button"
-                      style={{
-                        width: "100%",
-                      }}
-                    >
-                      عرض القائمة
-                    </Link>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
+            <label htmlFor="password">
+              كلمة المرور
+            </label>
+
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(event) =>
+                setPassword(event.target.value)
+              }
+              placeholder="****"
+              autoComplete="new-password"
+              minLength={6}
+              required
+            />
+
+<button
+              type="submit"
+              className="primary-button"
+              disabled={loading}
+            >
+              {loading
+                ? "جاري إنشاء الحساب..."
+                : "إنشاء الحساب"}
+            </button>
+          </form>
+
+          <p className="auth-footer">
+            لديك حساب بالفعل؟{" "}
+            <Link href="/login">
+              تسجيل الدخول
+            </Link>
+          </p>
         </div>
       </section>
     </main>
