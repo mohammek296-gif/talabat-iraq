@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCart } from "@/components/CartProvider";
+import Header from "@/components/Header";
 
 export default function CartPage() {
   const {
@@ -14,11 +15,16 @@ export default function CartPage() {
 
   return (
     <main>
+      <Header />
+
       <section className="restaurants">
         <div className="container">
           <div className="section-heading">
             <h1>سلة الطلب</h1>
-            <p>راجع وجباتك قبل إتمام الطلب</p>
+
+            <p>
+              راجع وجباتك قبل إتمام الطلب
+            </p>
           </div>
 
           {items.length === 0 ? (
@@ -77,7 +83,9 @@ export default function CartPage() {
                         −
                       </button>
 
-                      <strong>{item.quantity}</strong>
+                      <strong>
+                        {item.quantity}
+                      </strong>
 
                       <button
                         type="button"
