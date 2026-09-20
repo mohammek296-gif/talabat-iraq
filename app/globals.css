@@ -528,3 +528,29 @@ button:disabled {
     width: 100%;
   }
 }
+/* Orders */
+
+.order-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.order-status.pending {
+  background: #fff1d6;
+  color: #9a6700;
+}
+
+.order-status.completed {
+  background: #e8f7ee;
+  color: #18794e;
+}
+
+.order-status.cancelled {
+  background: #ffe8e8;
+  color: #b42318;
+}
