@@ -387,3 +387,33 @@ img {
     padding: 50px 0;
   }
 }
+
+/* Cart and Add Buttons */
+
+.add-button {
+  width: 100%;
+  background: var(--primary);
+  color: var(--white);
+  padding: 11px 18px;
+  border-radius: 10px;
+  font-weight: 700;
+  transition: background 0.2s ease;
+}
+
+.add-button:hover {
+  background: var(--primary-dark);
+}
+
+.restaurant-info button:not(.add-button) {
+  background: #f1f1f1;
+  color: #171717;
+  min-width: 42px;
+  min-height: 40px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+.restaurant-info button:not(.add-button):hover {
+  background: #e5e5e5;
+}
