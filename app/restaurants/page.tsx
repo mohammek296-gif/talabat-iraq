@@ -1,5 +1,6 @@
 import Link from "next/link";
 import AddButton from "@/components/AddButton";
+import Header from "@/components/Header";
 
 const restaurants = [
   {
@@ -34,6 +35,8 @@ const restaurants = [
 export default function RestaurantsPage() {
   return (
     <main>
+      <Header />
+
       <section className="restaurants">
         <div className="container">
           <div className="section-heading">
@@ -83,6 +86,18 @@ export default function RestaurantsPage() {
                       name={restaurant.name}
                       price={restaurant.price}
                     />
+                  </div>
+
+                  <div style={{ marginTop: "10px" }}>
+                    <Link
+                      href={/restaurants/${restaurant.id}}
+                      className="secondary-button"
+                      style={{
+                        width: "100%",
+                      }}
+                    >
+                      عرض القائمة
+                    </Link>
                   </div>
                 </div>
               </article>
