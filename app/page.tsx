@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Header from "@/components/Header";
 
 const categories = [
   { name: "مطاعم", icon: "🍽️" },
@@ -12,28 +13,14 @@ const categories = [
 export default function HomePage() {
   return (
     <main>
-      <header className="header">
-        <div className="container header-content">
-          <Link href="/" className="logo">
-            كربلاء فود
-          </Link>
-
-          <nav className="nav">
-            <Link href="/">الرئيسية</Link>
-            <Link href="/restaurants">المطاعم</Link>
-            <Link href="/orders">طلباتي</Link>
-          </nav>
-
-          <button className="cart-button">
-            🛒 السلة
-          </button>
-        </div>
-      </header>
+      <Header />
 
       <section className="hero">
         <div className="container hero-content">
           <div>
-            <span className="hero-badge">🍴 توصيل الطعام في كربلاء</span>
+            <span className="hero-badge">
+              🍴 توصيل الطعام في كربلاء
+            </span>
 
             <h1>
               اطلب أكلك المفضل
@@ -46,11 +33,17 @@ export default function HomePage() {
             </p>
 
             <div className="hero-actions">
-              <Link href="/restaurants" className="primary-button">
+              <Link
+                href="/restaurants"
+                className="primary-button"
+              >
                 تصفح المطاعم
               </Link>
 
-              <Link href="/orders" className="secondary-button">
+              <Link
+                href="/orders"
+                className="secondary-button"
+              >
                 متابعة طلباتي
               </Link>
             </div>
@@ -58,8 +51,12 @@ export default function HomePage() {
 
           <div className="hero-card">
             <div className="food-emoji">🍔</div>
+
             <h2>وجبتك أقرب مما تتوقع</h2>
-            <p>اطلب الآن واستمتع بطعامك المفضل.</p>
+
+            <p>
+              اطلب الآن واستمتع بطعامك المفضل.
+            </p>
           </div>
         </div>
       </section>
@@ -78,7 +75,10 @@ export default function HomePage() {
                 className="category-card"
                 key={category.name}
               >
-                <span className="category-icon">{category.icon}</span>
+                <span className="category-icon">
+                  {category.icon}
+                </span>
+
                 <span>{category.name}</span>
               </Link>
             ))}
@@ -99,6 +99,7 @@ export default function HomePage() {
 
               <div className="restaurant-info">
                 <h3>مطعم كربلاء برغر</h3>
+
                 <p>برغر • وجبات سريعة</p>
 
                 <div className="restaurant-meta">
@@ -113,6 +114,7 @@ export default function HomePage() {
 
               <div className="restaurant-info">
                 <h3>بيتزا كربلاء</h3>
+
                 <p>بيتزا • إيطالي</p>
 
                 <div className="restaurant-meta">
@@ -127,8 +129,9 @@ export default function HomePage() {
 
               <div className="restaurant-info">
                 <h3>دجاج كربلاء</h3>
+
                 <p>دجاج • وجبات سريعة</p>
-                
+
                 <div className="restaurant-meta">
                   <span>⭐ 4.6</span>
                   <span>🚚 20 دقيقة</span>
@@ -138,14 +141,16 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
       <footer className="footer">
         <div className="container">
           <h3>كربلاء فود</h3>
+
           <p>منصة طلب وتوصيل الطعام في كربلاء</p>
+
           <p>© 2026 كربلاء فود. جميع الحقوق محفوظة.</p>
         </div>
       </footer>
     </main>
   );
 }
-      
