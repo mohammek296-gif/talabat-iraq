@@ -3,6 +3,7 @@
 import {
   createContext,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
@@ -23,41 +24,102 @@ type CartContextType = {
   clearCart: () => void;
   total: number;
   itemCount: number;
+  isLoaded: boolean;
 };
 
-const CartContext = createContext<CartContextType | undefined>(undefined);
+const CartContext =
+  createContext<CartContextType | undefined>(
+    undefined
+  );
 
-export function CartProvider({ children }: { children: ReactNode }) {
+const CART_STORAGE_KEY = "karbala-food-cart";
+
+export function CartProvider({
+  children,
+}: {
+  children: ReactNode;
+}) {
   const [items, setItems] = useState<CartItem[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  const addItem = (item: Omit<CartItem, "quantity">) => {
+  useEffect(() => {
+    try {
+      const savedCart =
+        localStorage.getItem(CART_STORAGE_KEY);
+
+      if (savedCart) {
+        const parsedCart = JSON.parse(savedCart);
+
+        if (Array.isArray(parsedCart)) {
+          setItems(parsedCart);
+        }
+      }
+    } catch {
+      localStorage.removeItem(CART_STORAGE_KEY);
+    } finally {
+      setIsLoaded(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isLoaded) {
+      return;
+    }
+
+    try {
+      localStorage.setItem(
+        CART_STORAGE_KEY,
+        JSON.stringify(items)
+      );
+    } catch {
+      // تجاهل أخطاء التخزين المحلي
+    }
+  }, [items, isLoaded]);
+
+  const addItem = (
+    item: Omit<CartItem, "quantity">
+  ) => {
     setItems((currentItems) => {
       const existingItem = currentItems.find(
-        (currentItem) => currentItem.id === item.id
+        (currentItem) =>
+          currentItem.id === item.id
       );
 
       if (existingItem) {
-        return currentItems.map((currentItem) =>
-          currentItem.id === item.id
-            ? {
-                ...currentItem,
-                quantity: currentItem.quantity + 1,
-              }
-            : currentItem
+        return currentItems.map(
+          (currentItem) =>
+            currentItem.id === item.id
+              ? {
+                  ...currentItem,
+                  quantity:
+                    currentItem.quantity + 1,
+                }
+              : currentItem
         );
       }
 
-      return [...currentItems, { ...item, quantity: 1 }];
+      return [
+        ...currentItems,
+        {
+          ...item,
+          quantity: 1,
+        },
+      ];
     });
   };
 
   const removeItem = (id: string) => {
     setItems((currentItems) =>
-      currentItems.filter((item) => item.id !== id)
+      currentItems.filter(
+        (item) => item.id !== id
+      )
     );
   };
 
-  const updateQuantity = (id: string, quantity: number) => {
+  const updateQuantity = (
+    id: string,
+    quantity: number
+  ) => {
     if (quantity <= 0) {
       removeItem(id);
       return;
@@ -65,7 +127,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
     setItems((currentItems) =>
       currentItems.map((item) =>
-        item.id === id ? { ...item, quantity } : item
+        item.id === id
+          ? {
+              ...item,
+              quantity,
+            }
+          : item
       )
     );
   };
@@ -77,14 +144,20 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const total = useMemo(
     () =>
       items.reduce(
-        (sum, item) => sum + item.price * item.quantity,
+        (sum, item) =>
+          sum + item.price * item.quantity,
         0
       ),
     [items]
   );
 
   const itemCount = useMemo(
-    () => items.reduce((sum, item) => sum + item.quantity, 0),
+    () =>
+      items.reduce(
+        (sum, item) =>
+          sum + item.quantity,
+        0
+      ),
     [items]
   );
 
@@ -97,8 +170,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
       clearCart,
       total,
       itemCount,
+      isLoaded,
     }),
-    [items, total, itemCount]
+    [
+      items,
+      total,
+      itemCount,
+      isLoaded,
+    ]
   );
 
   return (
@@ -109,10 +188,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
 }
 
 export function useCart() {
-  const context = useContext(CartContext);
+  const context =
+    useContext(CartContext);
 
   if (!context) {
-    throw new Error("useCart يجب أن يستخدم داخل CartProvider");
+    throw new Error(
+      "useCart يجب أن يستخدم داخل CartProvider"
+    );
   }
 
   return context;
