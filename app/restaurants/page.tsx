@@ -1,3 +1,4 @@
+import Link from "next/link";
 import AddButton from "@/components/AddButton";
 
 const restaurants = [
@@ -37,7 +38,10 @@ export default function RestaurantsPage() {
         <div className="container">
           <div className="section-heading">
             <h1>المطاعم</h1>
-            <p>اختر مطعمك المفضل واطلب وجبتك</p>
+
+            <p>
+              اختر مطعمك المفضل واطلب وجبتك
+            </p>
           </div>
 
           <div className="restaurant-grid">
@@ -46,18 +50,31 @@ export default function RestaurantsPage() {
                 className="restaurant-card"
                 key={restaurant.id}
               >
-                <div className="restaurant-image">
-                  {restaurant.image}
-                </div>
+                <Link
+                  href={/restaurants/${restaurant.id}}
+                >
+                  <div className="restaurant-image">
+                    {restaurant.image}
+                  </div>
+                </Link>
 
                 <div className="restaurant-info">
-                  <h3>{restaurant.name}</h3>
+                  <Link
+                    href={/restaurants/${restaurant.id}}
+                  >
+                    <h3>{restaurant.name}</h3>
+                  </Link>
 
                   <p>{restaurant.category}</p>
 
                   <div className="restaurant-meta">
-                    <span>⭐ {restaurant.rating}</span>
-                    <span>🚚 {restaurant.deliveryTime}</span>
+                    <span>
+                      ⭐ {restaurant.rating}
+                    </span>
+
+                    <span>
+                      🚚 {restaurant.deliveryTime}
+                    </span>
                   </div>
 
                   <div style={{ marginTop: "16px" }}>
