@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import Header from "@/components/Header";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -52,9 +53,15 @@ export default function ProfilePage() {
   if (loading) {
     return (
       <main>
+        <Header />
+
         <section className="auth-section">
           <div className="auth-card">
             <h1>جاري التحميل...</h1>
+
+            <p>
+              نتحقق من بيانات حسابك.
+            </p>
           </div>
         </section>
       </main>
@@ -63,6 +70,8 @@ export default function ProfilePage() {
 
   return (
     <main>
+      <Header />
+
       <section className="auth-section">
         <div className="auth-card">
           <h1>حسابي</h1>
@@ -102,6 +111,13 @@ export default function ProfilePage() {
               className="primary-button"
             >
               طلباتي
+            </Link>
+
+            <Link
+              href="/cart"
+              className="secondary-button"
+            >
+              سلة الطلب
             </Link>
 
             <Link
