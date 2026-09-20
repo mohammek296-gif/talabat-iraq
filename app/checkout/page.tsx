@@ -1,17 +1,49 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 import { useCart } from "@/components/CartProvider";
 
 export default function CheckoutPage() {
-  const { items, total } = useCart();
+  const router = useRouter();
+
+  const { items, total, clearCart } = useCart();
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
 
+  const [checkingUser, setCheckingUser] = useState(true);
   const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    const checkUser = async () => {
+      if (!supabase) {
+        setCheckingUser(false);
+        return;
+      }
+
+      const { data } = await supabase.auth.getUser();
+
+      if (!data.user) {
+        router.push("/login");
+        return;
+      }
+
+      const userName =
+        data.user.user_metadata?.name;
+
+      if (userName) {
+        setName(userName);
+      }
+
+      setCheckingUser(false);
+    };
+
+    checkUser();
+  }, [router]);
 
   const handleSubmit = (
     event: React.FormEvent<HTMLFormElement>
@@ -19,9 +51,26 @@ export default function CheckoutPage() {
     event.preventDefault();
 
     setSubmitted(true);
+    clearCart();
   };
 
-  if (items.length === 0) {
+  if (checkingUser) {
+    return (
+      <main>
+        <section className="auth-section">
+          <div className="auth-card">
+            <h1>جاري التحقق...</h1>
+
+            <p>
+              نتحقق من تسجيل دخولك.
+            </p>
+          </div>
+        </section>
+      </main>
+    );
+  }
+
+  if (items.length === 0 && !submitted) {
     return (
       <main>
         <section className="auth-section">
@@ -52,8 +101,7 @@ export default function CheckoutPage() {
             <h1>تم استلام طلبك ✅</h1>
 
             <p>
-              شكرًا لك {name}، سيتم تجهيز طلبك
-              وإرساله إلى العنوان المحدد.
+              شكرًا لك {name}، تم استلام معلومات الطلب.
             </p>
 
             <p style={{ marginTop: "10px" }}>
@@ -133,7 +181,6 @@ export default function CheckoutPage() {
               rows={4}
               required
             />
-
             <div
               style={{
                 background: "#f7f7f7",
