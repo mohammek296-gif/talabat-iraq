@@ -1,6 +1,11 @@
+"use client";
+
 import Link from "next/link";
+import { useCart } from "./CartProvider";
 
 export default function Header() {
+  const { itemCount } = useCart();
+
   return (
     <header className="header">
       <div className="container header-content">
@@ -16,6 +21,7 @@ export default function Header() {
 
         <Link href="/cart" className="cart-button">
           🛒 السلة
+          {itemCount > 0 &&  (${itemCount})}
         </Link>
       </div>
     </header>
