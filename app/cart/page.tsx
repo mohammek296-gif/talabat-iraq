@@ -52,7 +52,8 @@ export default function CartPage() {
                     <h3>{item.name}</h3>
 
                     <p>
-                      السعر: {item.price.toLocaleString("ar-IQ")} د.ع
+                      السعر:{" "}
+                      {item.price.toLocaleString("ar-IQ")} د.ع
                     </p>
 
                     <div
@@ -92,7 +93,9 @@ export default function CartPage() {
 
                       <button
                         type="button"
-                        onClick={() => removeItem(item.id)}
+                        onClick={() =>
+                          removeItem(item.id)
+                        }
                       >
                         حذف
                       </button>
@@ -100,9 +103,9 @@ export default function CartPage() {
 
                     <p style={{ marginTop: "15px" }}>
                       المجموع:{" "}
-                      {(item.price * item.quantity).toLocaleString(
-                        "ar-IQ"
-                      )}{" "}
+                      {(
+                        item.price * item.quantity
+                      ).toLocaleString("ar-IQ")}{" "}
                       د.ع
                     </p>
                   </div>
@@ -112,7 +115,8 @@ export default function CartPage() {
               <div className="restaurant-card">
                 <div className="restaurant-info">
                   <h2>
-                    الإجمالي: {total.toLocaleString("ar-IQ")} د.ع
+                    الإجمالي:{" "}
+                    {total.toLocaleString("ar-IQ")} د.ع
                   </h2>
 
                   <div
@@ -123,12 +127,12 @@ export default function CartPage() {
                       flexWrap: "wrap",
                     }}
                   >
-                    <button
-                      type="button"
+                    <Link
+                      href="/checkout"
                       className="primary-button"
                     >
                       إتمام الطلب
-                    </button>
+                    </Link>
                     <button
                       type="button"
                       className="secondary-button"
