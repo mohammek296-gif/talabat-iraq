@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import Header from "@/components/Header";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -36,7 +37,9 @@ export default function LoginPage() {
         });
 
       if (loginError) {
-        setError(loginError.message);
+        setError(
+          "البريد الإلكتروني أو كلمة المرور غير صحيحة."
+        );
         return;
       }
 
@@ -51,11 +54,15 @@ export default function LoginPage() {
 
   return (
     <main>
+      <Header />
+
       <section className="auth-section">
         <div className="auth-card">
           <h1>تسجيل الدخول</h1>
 
-          <p>سجل دخولك إلى حسابك في كربلاء فود</p>
+          <p>
+            سجل دخولك إلى حسابك في كربلاء فود
+          </p>
 
           {error && (
             <div
@@ -72,7 +79,10 @@ export default function LoginPage() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="auth-form">
+          <form
+            onSubmit={handleSubmit}
+            className="auth-form"
+          >
             <label htmlFor="email">
               البريد الإلكتروني
             </label>
@@ -85,6 +95,7 @@ export default function LoginPage() {
                 setEmail(event.target.value)
               }
               placeholder="example@email.com"
+              autoComplete="email"
               required
             />
 
@@ -100,6 +111,7 @@ export default function LoginPage() {
                 setPassword(event.target.value)
               }
               placeholder="****"
+              autoComplete="current-password"
               required
             />
 
