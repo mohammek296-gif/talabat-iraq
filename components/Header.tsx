@@ -17,6 +17,7 @@ export default function Header() {
           <Link href="/">الرئيسية</Link>
           <Link href="/restaurants">المطاعم</Link>
           <Link href="/orders">طلباتي</Link>
+          <Link href="/profile">حسابي</Link>
         </nav>
 
         <div
