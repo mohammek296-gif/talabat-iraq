@@ -502,3 +502,29 @@ img {
 .restaurant-info button:not(.add-button):hover {
   background: #e5e5e5;
 }
+/* Checkout */
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.primary-button,
+.secondary-button {
+  cursor: pointer;
+}
+
+.secondary-button {
+  border: 1px solid var(--border);
+}
+
+@media (max-width: 600px) {
+  .auth-card {
+    width: 100%;
+  }
+}
